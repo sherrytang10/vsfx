@@ -1,7 +1,7 @@
-import { isNotInterger } from '../../lib/@common';
+import { isInterger } from '../../lib/@common';
 
 export class TestfindDto {
-    @isNotInterger()
+    @isInterger()
     pro1;
     pro2;
 }

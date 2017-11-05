@@ -20,6 +20,7 @@ app.use(function(req, res, next) {
 });
 
 app.use('/restapi', DefineRoute(path.join(__dirname, '../controller')));
+
 app.use(function(req, res, next) {
     console.log('Time last:', Date.now());
     next();
