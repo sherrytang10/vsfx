@@ -1,7 +1,7 @@
-import { isNotEmpty } from '../../lib/@common/decorator/validation';
+import { isNotInterger } from '../../lib/@common';
 
 export class TestfindDto {
-    @isNotEmpty()
+    @isNotInterger()
     pro1;
     pro2;
 }
