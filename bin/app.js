@@ -1,9 +1,9 @@
 const express = require('express');
 const app = express();
-const router = express.Router();
-const Routes = require('../router');
+const path = require('path');
 const Middleware = require('../middleware');
 const argv = require('minimist')(process.argv.slice(2));
+import { DefineRoute } from '../lib/@common/connect';
 
 
 
@@ -19,7 +19,7 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.use('/restapi', Routes);
+app.use('/restapi', DefineRoute(path.join(__dirname, '../controller')));
 app.use(function(req, res, next) {
     console.log('Time last:', Date.now());
     next();
