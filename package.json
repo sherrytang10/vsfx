@@ -11,7 +11,9 @@
     "body-parser": "^1.18.2",
     "ejs": "^2.5.7",
     "express": "^4.16.1",
-    "mysql": "^2.15.0"
+    "mysql": "^2.15.0",
+    "reflect-metadata": "^0.1.10",
+    "typeorm": "^0.1.6"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

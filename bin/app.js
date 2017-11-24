@@ -3,8 +3,8 @@ const app = express();
 const path = require('path');
 const Middleware = require('../middleware');
 const argv = require('minimist')(process.argv.slice(2));
-import { DefineRoute } from '../lib/@common/connect';
-
+const { DefineRoute } = require('../lib/@common/connect');
+require('../lib/@common/db/repository');
 
 
 /**
