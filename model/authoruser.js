@@ -2,8 +2,8 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class AuthorUser {
     // 自增长主键列
-    // @PrimaryGeneratedColumn()
-    // id;
+    @PrimaryGeneratedColumn()
+    id;
 
     @Column()
     userName;
