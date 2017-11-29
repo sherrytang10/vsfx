@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Validation, Crypto } from '../../../lib/@common';
 import { isNotInterger, isEmpty, isFalse } from '../../../lib/@common/validate';
 import { UsersService } from '../../../service/users/users';
-import { UsersCreateDto } from './dto/users.create.dto';
+import { UsersCreateDto, UsersUpdateDto } from './dto/users.dto';
 
 @Controller('/users')
 export class usersController {
@@ -57,6 +57,7 @@ export class usersController {
         let { email, phone } = modelData;
         let users = await UsersService.getUsersExist({ phone, email });
         if (!users.id) {
+            modelData.createTime = (new Date()).pattern('yyyy-MM-dd hh:mm:ss');
             modelData.password = Crypto.aesEncryptPipe(modelData.password);
             res.sendSuccess(await UsersService.saveAny(modelData));
         }
@@ -80,7 +81,7 @@ export class usersController {
      * @memberof usersController
      */
     @Post('/update')
-    @Validation(UsersCreateDto)
+    @Validation(UsersUpdateDto)
     async updateUsers({ modelData }, res) {
         res.sendSuccess(await UsersService.updateAny(modelData));
     }

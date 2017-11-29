@@ -1,6 +1,7 @@
-import { Controller, Get, Validation } from '../../../lib/@common';
+import { Controller, Get, Post, Validation } from '../../../lib/@common';
 import { isNotInterger } from '../../../lib/@common/validate';
 import { ArticleService } from '../../../service/article/article';
+import { ArticleCreateDto } from './dto/article.dto';
 
 /**
  * 文章controller
@@ -22,7 +23,8 @@ export class ArticleController {
         if (typeId && isNotInterger(+typeId)) {
             res.sendError('入参类型错误')
         } else {
-            res.sendSuccess(await ArticleService.getAnyAll('article', { column: ['id'], where: { disabled: 1, id: 2 } }))
+            // res.sendSuccess(await ArticleService.getAnyAll('article', { column: ['id'], where: { disabled: 1, id: 2 } }))
+            res.sendSuccess(await ArticleService.findAllArticle({ typeId }));
         }
     }
 
@@ -40,5 +42,24 @@ export class ArticleController {
         } else {
             res.sendSuccess(await ArticleService.getArticleInfoById({ id }))
         }
+    }
+
+    @Post('/save')
+    @Validation(ArticleCreateDto)
+    async saveArticleInfo({ modelData, session }, res) {
+        modelData.authorUserId = 1; //session.users.id;
+        let nowTime = (new Date()).pattern('yyyy-MM-dd hh:mm:ss');
+        modelData.createTime = nowTime;
+        if (!modelData.publishTime) {
+            modelData.publishTime = nowTime;
+        }
+        if (!modelData.docreader || !modelData.docreader.replace(/\s/g, '')) {
+            modelData.docreader = modelData.content.substr(0, 200);
+        }
+        // 默认图片
+        if (!modelData.picture) {
+
+        }
+        res.sendSuccess(await ArticleService.saveAny(modelData));
     }
 }

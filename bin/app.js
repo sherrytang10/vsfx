@@ -6,9 +6,10 @@ const session = require('express-session');
 const Middleware = require('../middleware');
 const argv = require('minimist')(process.argv.slice(2));
 
-const { DefineRoute } = require('../lib/@common/connect');
-require('../lib/@common/db/repository');
-
+const { DefineRoute, DefineEntity } = require('../lib/@common/connect');
+require('../lib/extend');
+require('../lib/defineGlobal');
+DefineEntity(path.join(__dirname, '../entity'))
 
 /**
  * 设置views路径
