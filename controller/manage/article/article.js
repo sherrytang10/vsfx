@@ -23,8 +23,8 @@ export class ArticleController {
         if (typeId && isNotInterger(+typeId)) {
             res.sendError('入参类型错误')
         } else {
-            // res.sendSuccess(await ArticleService.getAnyAll('article', { column: ['id'], where: { disabled: 1, id: 2 } }))
-            res.sendSuccess(await ArticleService.findAllArticle({ typeId }));
+            res.sendSuccess(await ArticleService.getAnyAll('article', { column: ['id'], where: { disabled: 1, id: 2 } }))
+                // res.sendSuccess(await ArticleService.findAllArticle({ typeId }));
         }
     }
 
