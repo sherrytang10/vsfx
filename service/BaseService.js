@@ -5,8 +5,8 @@
  * @class BaseService
  */
 export class BaseService {
-    constructor($sql) {
-        this.$sql = $sql;
+    constructor(model) {
+        this.model = model;
     }
 
     /**
@@ -73,12 +73,12 @@ export class BaseService {
     /**
      * 保存对象 test
      * 
-     * @param {any} any 
+     * @param table表名或对象 any为表名时数据集
      * @returns 
      * @memberof BaseService
      */
-    async saveAny(any) {
-        return await this.repository(any).save();
+    async saveAny(table, any) {
+        return await this.repository(table).save(any);
     }
 
     /**
@@ -88,8 +88,8 @@ export class BaseService {
      * @returns 
      * @memberof BaseService
      */
-    async updateAny(any) {
-        return await this.repository(any).update();
+    async updateAny(table, any) {
+        return await this.repository(table).update(any);
     }
 
 

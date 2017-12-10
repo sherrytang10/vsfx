@@ -1,6 +1,6 @@
 import { Table, Column, PrimaryGeneratedColumn } from '../lib/@common';
 @Table('article')
-export class ArticleCreateDto {
+export class Article {
     @PrimaryGeneratedColumn()
     id;
     @Column()
