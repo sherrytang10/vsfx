@@ -46,7 +46,7 @@ app.use(function(err, req, res, next) {
     res.status(500).send('Something broke!');
 });
 
-var server = app.listen(argv.port || 3000, function() {
+var server = app.listen(argv.port || 7779, function() {
     var host = server.address().address;
     var port = server.address().port;
     console.log('Example app listening at http://%s:%s', host, port);

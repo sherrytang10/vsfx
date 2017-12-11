@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Validation } from '../../../lib/@common';
-import { isNotInterger } from '../../../lib/@common/validate';
+import { isNotInterger, isEmpty } from '../../../lib/@common/validate';
 import { ArticleService } from '../../../service/article/article';
 import { ArticleCreateDto } from './dto/article.dto';
 
@@ -48,6 +48,11 @@ export class ArticleController {
     @Validation(ArticleCreateDto)
     async saveArticleInfo({ modelData, session }, res) {
         modelData.authorUserId = 1; //session.users.id;
+        if (modelData.type = 1) {
+            if (isEmpty(modelData.picture)) {
+                return res.sendError('题图不能为空');
+            }
+        }
         let nowTime = (new Date()).pattern('yyyy-MM-dd hh:mm:ss');
         modelData.createTime = nowTime;
         if (!modelData.publishTime) {

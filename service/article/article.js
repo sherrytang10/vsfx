@@ -14,7 +14,7 @@ export class ArticleService extends BaseService {
      * @memberof ArticleService
      */
     async findAllArticle({ typeId, id, userId }) {
-        let sql = `select a.id, a.title,a.articleTypeId,at.name articleTypeName,au.nickName,a.docreader,
+        let sql = `select a.id, a.title,a.type,a.articleTypeId,at.name articleTypeName,au.nickName,a.docreader,
             a.labelIds,a.picture,a.praise,a.visitors,date_format(a.publishTime, "%Y-%m-%d %H:%I:%S") publishTime from article a, article_type at, users au 
             where a.disabled = 1 and at.id = a.articleTypeId and au.id = a.authorUserId`;
         if (typeId) {

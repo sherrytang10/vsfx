@@ -37,6 +37,14 @@ export class Article {
     @Column()
     publishTime;
 
+    /**
+     * 文章或者短记
+     * 
+     * @memberof Article
+     */
+    @Column()
+    type;
+
     @Column()
     createTime;
 }

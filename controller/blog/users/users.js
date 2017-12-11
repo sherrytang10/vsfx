@@ -3,12 +3,12 @@ import { isNotInterger } from '../../../lib/@common/validate';
 import { UsersService } from '../../../service/users/users';
 @Controller('/users')
 export class usersController {
-    @Get('/findOne:/id')
+    @Get('/findOne/:id')
         // @Validation(TestfindDto)
-    async findOneById({ params: { id } }) {
-        if (isNotInterger(id)) {
+    async findOneById({ params: { id } }, res) {
+        if (isNotInterger(+id)) {
             return res.sendError('入参类型错误')
         }
-        return await this.usersService.getUsersByParams({ id });
+        return await UsersService.getUsersByParams({ id });
     }
 }
