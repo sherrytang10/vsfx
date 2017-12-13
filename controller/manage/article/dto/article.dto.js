@@ -2,6 +2,8 @@ import { IsInterger, IsNotEmpty, IsEmail, IsPhone, IsCompleteDate, Length, Entit
 
 @Entity('article')
 export class ArticleCreateDto {
+    @IsInterger()
+    id;
     @Length(1, 50, '标题长度为1-50个字符')
     title;
 
@@ -21,16 +23,19 @@ export class ArticleCreateDto {
     @IsInterger()
     articleTypeId;
 
-    //赞
-    @IsInterger(false)
-    praise;
+    // //赞
+    // @IsInterger(false)
+    // praise;
 
-    // 访问量
-    @IsInterger(false)
-    visitors
+    // // 访问量
+    // @IsInterger(false)
+    // visitors
 
-    @IsInterger(false)
-    disabled;
+    // @IsInterger(false)
+    // disabled;
+
+    @IsInterger()
+    type;
 
     @IsCompleteDate(false)
     publishTime;

@@ -18,11 +18,11 @@ export class ArticleController {
      * @memberof ArticleController
      */
     @Get('/findAll')
-    async findAllArticle({ query: { typeId } }, res) {
-        if (typeId && isNotInterger(+typeId)) {
+    async findAllArticle({ query: { articleTypeId } }, res) {
+        if (articleTypeId && isNotInterger(+articleTypeId)) {
             res.sendError('入参类型错误')
         } else {
-            res.sendSuccess(await ArticleService.findAllArticle({ typeId }))
+            res.sendSuccess(await ArticleService.findAllArticle({ articleTypeId }))
         }
     }
 

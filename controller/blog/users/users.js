@@ -9,6 +9,6 @@ export class usersController {
         if (isNotInterger(+id)) {
             return res.sendError('入参类型错误')
         }
-        return await UsersService.getUsersByParams({ id });
+        res.sendSuccess(await UsersService.getUsersByParams({ id }));
     }
 }

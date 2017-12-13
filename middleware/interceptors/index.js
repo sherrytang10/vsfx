@@ -22,18 +22,30 @@ module.exports = function(options) {
     };
     return async function(req, res, next) {
         try {
-            let { url } = req;
-            return next();
+            let { url, session } = req;
+            // console.log('~~')
+            // console.log(!session.users)
+            // console.log('\n\n')
+            // if (!session.users || !session.users.id) {
+            //     console.log('!!!')
+            //     res.send({
+            //         status: 998,
+            //         errmsg: '登录态失效，请重新登录'
+            //     });
+            //     res.end();
+            //     return;
+            // }
+            // return next();
             let interceptor = options.prefix.some(item => url.indexOf(item) === 0);
             if (!interceptor) {
                 return next();
             }
-            // let { userInfo, menuList } = global.__globalUserInfo;
-            // // 未登录重定向到登录
-            // if (!userInfo) {
-            //     res.redirect('/login');
-            //     return next();
-            // }
+            let { userInfo, menuList } = global.__globalUserInfo;
+            // 未登录重定向到登录
+            if (!userInfo) {
+                res.redirect('/login');
+                return next();
+            }
             // if (!menuList) {
             //     // menuList = await req.execute(`call getMenuList(${userInfo.id})`);
             //     console.log(global.__globalUserInfo)

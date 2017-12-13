@@ -40,7 +40,7 @@ export class BaseService {
      */
     async publishAny(id) {
         if (!id || id == 0) { return 'id异常' }
-        let exe = await this.execute(`update ${this.model} set disable = 1 where id = ?`, id);
+        let exe = await this.execute(`update ${this.model} set disabled = 1 where id = ${id}`);
         return exe ? '操作成功' : '操作失败';
     }
 
@@ -53,7 +53,7 @@ export class BaseService {
      */
     async disabledAny(id) {
         if (!id || id == 0) { return 'id异常' }
-        let exe = await this.execute(`update ${this.model} set disable = 0 where id = ?`, id);
+        let exe = await this.execute(`update ${this.model} set disabled = 0 where id = ?`, id);
         return exe ? '操作成功' : '操作失败';
     }
 
@@ -73,12 +73,12 @@ export class BaseService {
     /**
      * 保存对象 test
      * 
-     * @param table表名或对象 any为表名时数据集
+     * @param any为表名时数据集
      * @returns 
      * @memberof BaseService
      */
-    async saveAny(table, any) {
-        return await this.repository(table).save(any);
+    async saveAny(any) {
+        return await this.repository(this.model).save(any);
     }
 
     /**
@@ -88,9 +88,19 @@ export class BaseService {
      * @returns 
      * @memberof BaseService
      */
-    async updateAny(table, any) {
-        return await this.repository(table).update(any);
+    async updateAny(any) {
+        console.log('~~~~~~~~`')
+        return await this.repository(this.model).update(any);
     }
 
+    async saveOrUpdateAny(any) {
+        let { id } = any;
+        console.log('~~~~~~~~`' + id)
+        if (/^[-+]?\d+$/.test(id) && id != 0) {
+            return this.updateAny(any)
+        } else {
+            return this.saveAny(any)
+        }
+    }
 
 }

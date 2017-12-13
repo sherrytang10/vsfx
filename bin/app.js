@@ -16,8 +16,6 @@ DefineEntity(path.join(__dirname, '../entity'))
  */
 // app.set('views', './views');
 // app.use('/static', express.static('static'));
-
-
 app.use(bodyParser.json());
 app.use(session({
     secret: 'pazq-node-website',
@@ -26,11 +24,13 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
 }));
+
 app.use(function(req, res, next) {
     console.log('Time:', Date.now());
     next();
 });
 
+app.use(Middleware.interceptors('/controller/manage'));
 app.use('/restapi', DefineRoute(path.join(__dirname, '../controller/blog')));
 app.use('/manage', DefineRoute(path.join(__dirname, '../controller/manage')));
 
