@@ -6,11 +6,16 @@ export class ArticleTypeService extends BaseService {
     constructor() {
         super('article_ype');
     }
-    async findAllGroupType() {
-        return this.execute(`SELECT count(a.articleTypeId) as num, at.id articleTypeId, at.name articleTypeName 
-            FROM article a LEFT JOIN article_type at ON at.id=a.articleTypeId 
-            LEFT JOIN users au ON au.id=a.authorUserId 
-            WHERE a.disabled=1 GROUP BY a.articleTypeId`);
+    async findAllGroupType({ userId } = { userId: null }) {
+        let query = `SELECT count(a.articleTypeId) as num, at.id as id, at.name classify 
+        FROM article a LEFT JOIN article_type at ON at.id=a.articleTypeId 
+        LEFT JOIN users au ON au.id=a.authorUserId 
+        WHERE a.disabled=1`
+        if (userId) {
+            query += ` and au.id=` + userId;
+        }
+        query += ' GROUP BY a.articleTypeId';
+        return this.execute(query);
     }
     async findAll({ disabled }) {
         let query = 'select id, name from article_type where 1=1';

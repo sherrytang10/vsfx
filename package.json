@@ -1,10 +1,10 @@
 {
-  "name": "pazqwebsite",
+  "name": "vsfx",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "bin": {
-    "pazqwebsite": "app.js"
+    "vsfx": "app.js"
   },
   "dependencies": {
     "babel-core": "^6.26.0",
@@ -33,6 +33,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "qualc",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qualc/vsfx.git"
+  },
+  "keywords":["vsfx"],
+  "bugs": {
+    "url": "https://github.com/qualc/vsfx/issues"
+  }
 }
