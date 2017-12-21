@@ -25,6 +25,8 @@ app.use(function(req, res, next) {
 });
 
 app.use(Middleware.interceptors('/controller'));
+app.use('/restapi', DefineRoute(path.join(__dirname, '../controller/blog')));
+app.use('/manage', DefineRoute(path.join(__dirname, '../controller/manage')));
 
 app.use(function(req, res, next) {
     console.log('Time last:', Date.now());
