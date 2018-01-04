@@ -1,0 +1,202 @@
+<%- include("../common/header.ejs") %>
+    <div class="main-container" id="main-container">
+        <%- include("../common/sidebar.ejs") %>
+            <div class="main-right">
+                <div class="breadcrumb-box" id="breadcrumbs">
+                    <ul class="breadcrumb">
+                        <li>
+                            <i class="icon-home home-icon"></i>
+                            <a href="../../index">主页</a>
+                        </li>
+                        <li class="active"><span>></span>菜单管理</li>
+                    </ul>
+                </div>
+                <div class="main-content">
+                    <div class="main-header">
+                        <h1>菜单列表<button id="showAddInfo" class=" btn btn-xs btn-info " style="width:100px;margin-left:30px; ">新增菜单</button></h1>
+                    </div>
+                    <div class="row ">
+                        <div class="col-xs-12 ">
+                            <div class="form-horizontal " role="form " id="d_search ">
+                                <div class="form-group">
+                                    <div class="col-sm-3 ">
+                                        <input type="text" id="menuSearchName" placeholder="请输入要查询的一级菜单" value="" class="col-xs-10 col-sm-10">
+                                    </div>
+                                    <div class="col-sm-1 ">
+                                        <button class="btn btn-xs btn-info " id="submitSeach">查询</button>
+                                    </div>
+                                    <div class="col-sm-1 ">
+                                        <button class="btn btn-xs btn-info " id="sortSave" style="display: none">
+                                            保存(排序)
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="sample-table-1" class="table table-bordered table-hover ">
+                                    <thead>
+                                        <tr class=" text-center">
+                                            <th style="width:8% ">编号</th>
+                                            <th style="width:12% ">一级菜单</th>
+                                            <th style="width:12% ">二级菜单</th>
+                                            <th style="width:25% ">菜单地址</th>
+                                            <th style="width:10% ">菜单key</th>
+                                            <th style="width:14% ">是否显示</th>
+                                            <th style="width:10% ">操作</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody id="ul_infoList">
+                                        <%if(menuList.length > 0 ){
+                                            for (var i=0;i<menuList.length;i++){
+                                                var menuItem = menuList[i];
+                                                var menuChild = menuItem.list || [];
+                                        %>
+                                            <tr id="ptr<%=menuItem.id%>" data-id="<%=menuItem.id%>" draggable="true" class="menu-tr" title="<%=menuItem.descriptor%>" data-menuname="<%=menuItem.menuName%>" data-menuuri="<%=menuItem.menuUri%>" data-parentid="<%=menuItem.parentId%>" data-menukey="<%=menuItem.menuKey%>"
+                                                data-ismenu="<%=menuItem.isMenu%>">
+                                                <td>
+                                                    <%= (i+1) %>
+                                                </td>
+                                                <td>
+                                                    <i class="menu-close" data-id="<%=menuItem.id%>"></i>
+                                                    <%=menuItem.menuName%>
+                                                </td>
+                                                <td class="gray">
+                                                    <%=menuChild.length%>个
+                                                </td>
+                                                <td>
+                                                    <%=menuItem.menuUri%>
+                                                </td>
+                                                <td>
+                                                    <%=menuItem.menuKey%>
+                                                </td>
+                                                <td class="text-center">
+                                                    <%=menuItem.isMenu == 1 ? '显示':'不显示'%>
+                                                </td>
+                                                <td>
+                                                    <div class=" visible-md visible-lg hidden-sm hidden-xs btn-Menu ">
+                                                        <a class="opbtn_a btnUpdateUserMenu" href="javascript:void(0);" data-id="<%=menuItem.id%>">
+                                                                    编辑
+                                                                </a>
+                                                        <a class="opbtn_a btnDeleteUserMenu" href="javascript:void(0);" data-id="<%=menuItem.id%>" data-menuname="<%=menuItem.menuName%>">
+                                                                    删除
+                                                                </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <%
+                                                for(var j = 0; j < menuChild.length ; j ++){ 
+                                            %>
+                                                <tr draggable="true" id="ctr<%=menuChild[j].id%>" data-id="<%=menuChild[j].id%>" class="sub-menu-tr" style="display: none" title="<%=menuChild[j].descriptor%>" data-menuname="<%=menuChild[j].menuName%>" data-menuuri="<%=menuChild[j].menuUri%>" data-parentid="<%=menuChild[j].parentId%>"
+                                                    data-menukey="<%=menuChild[j].menuKey%>" data-ismenu="<%=menuChild[j].isMenu%>">
+                                                    <td class="gray" style="padding-left:15px">
+                                                        >
+                                                        <%=(i+1)%>
+                                                            -
+                                                            <%= (j+1) %>
+                                                    </td>
+                                                    <td class="sub-menu gray text-left" style="padding-left:33px">
+                                                        <%=menuItem.menuName%>
+                                                    </td>
+                                                    <td style="padding-left:15px">
+                                                        <%=menuChild[j].menuName%>
+                                                    </td>
+                                                    <td>
+                                                        <%=menuChild[j].menuUri%>
+                                                    </td>
+                                                    <td>
+                                                        <%=menuChild[j].menuKey%>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <%=menuChild[j].isMenu == 1 ? '显示':'不显示'%>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <div class=" visible-md visible-lg hidden-sm hidden-xs btn-Menu ">
+                                                            <a class="opbtn_a btnUpdateUserMenu" href="javascript:void(0);" data-id="<%=menuChild[j].id%>">
+                                                                            编辑
+                                                                        </a>
+                                                            <a class="opbtn_a btnDeleteUserMenu" href="javascript:void(0);" data-id="<%=menuChild[j].id%>" data-menuname="<%=menuChild[j].menuName%>">
+                                                                            删除
+                                                                        </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <%
+                                                } 
+                                            } %>
+                                                    <%}else{%>
+                                                        <tr>
+                                                            <td colspan=7>
+                                                                <p class='noInfoMsg'>暂无数据信息</p>
+                                                            </td>
+                                                        </tr>
+                                                        <%}%>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.table-responsive -->
+                        </div>
+                        <!-- /span -->
+                    </div>
+                </div>
+            </div>
+    </div>
+
+
+    <div class="show-tbox hide" id="addUserMenuBox">
+        <div class="main-header">
+            <h1 id="usersMenuBoxTitle">添加菜单</h1>
+            <a href="javascript:void(0);" class="close">╳ </a>
+        </div>
+        <div class="row">
+            <div class="form-horizontal">
+                <div class="from-group">
+                    <label class="col-sm-3 control-label no-padding-right"><em>*</em>菜单名称</label>
+                    <div class="col-sm-7">
+                        <input type="text" id="menuName" data-id="0" placeholder="请输入菜单名称" value="" maxlength="10" class="col-xs-11 col-sm-11">
+                    </div>
+                </div>
+                <div class="from-group">
+                    <label class="col-sm-3 control-label no-padding-right"><em>*</em>KEY</label>
+                    <div class="col-sm-7">
+                        <input type="text" id="menuKEY" data-id="0" placeholder="请输入KEY" value="" maxlength="20" class="col-xs-11 col-sm-11">
+                    </div>
+                </div>
+                <div class="from-group">
+                    <label class="col-sm-3 control-label no-padding-right">URL</label>
+                    <div class="col-sm-7">
+                        <input type="text" id="menuUri" data-id="0" placeholder="请输入跳转URL" value="" maxlength="150" class="col-xs-11 col-sm-11">
+                    </div>
+                </div>
+                <div class="from-group">
+                    <label class="col-sm-3 control-label no-padding-right">一级菜单</label>
+                    <div class="col-sm-7">
+                        <select id="usersMenuBoxMenuId" name="s_type" class="form-control col-xs-11 col-sm-11" check-type="required">
+                                <option value="0">无一级菜单</option>
+                                <%for (var i=0;i<parentMenuList.length;i++){%>
+                                <option value="<%=parentMenuList[i].id%>"><%=parentMenuList[i].menuName%></option>
+                                <%}%>
+                            </select>
+                    </div>
+                </div>
+                <div class="from-group">
+                    <label class="col-sm-3 control-label no-padding-right">是否显示</label>
+                    <div class="col-sm-7">
+                        <input type="checkbox" id="menuIsMenu" class="col-xs-1 col-sm-1" checked>
+                    </div>
+                </div>
+                <div class="from-group">
+                    <label class="col-sm-3 control-label no-padding-right">备注说明</label>
+                    <div class="col-sm-7">
+                        <input type="text" id="menuDescriptor" data-id="0" placeholder="这个菜单是干嘛使的" value="" maxlength="250" class="col-xs-11 col-sm-11">
+                    </div>
+                </div>
+                <div class="from-group">
+                    <button class="btn btn-xs btn-info" id="usersMenuBoxSubmit" style="width:80px;display: block;margin:0 auto;">保存</button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <%- include("../common/footer.ejs") %>
