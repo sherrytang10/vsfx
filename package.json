@@ -1,37 +1,42 @@
 {
-  "name": "pazqwebsite",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "bin": {
-    "pazqwebsite": "app.js"
-  },
-  "dependencies": {
-    "babel-core": "^6.26.0",
-    "body-parser": "^1.18.2",
-    "ejs": "^2.5.7",
-    "express": "^4.16.1",
-    "express-session": "^1.15.6",
-    "mysql": "^2.15.0",
-    "reflect-metadata": "^0.1.10",
-    "typeorm": "^0.1.6"
-  },
-  "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-plugin-transform-async-to-generator": "^6.24.1",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-decorators-legacy": "^1.3.4",
-    "babel-plugin-transform-export-extensions": "^6.22.0",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-react": "^6.24.1"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC"
+    "name": "sfwebsite",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "bin": {
+        "pazqwebsite": "app.js"
+    },
+    "dependencies": {
+        "babel-core": "^6.26.0",
+        "body-parser": "^1.18.2",
+        "ejs": "^2.5.7",
+        "express": "^4.16.1",
+        "express-session": "^1.15.6",
+        "mysql": "^2.15.0",
+        "reflect-metadata": "^0.1.10",
+        "typeorm": "^0.1.6"
+    },
+    "devDependencies": {
+        "babel-core": "^6.26.0",
+        "babel-plugin-add-module-exports": "^0.2.1",
+        "babel-plugin-transform-async-to-generator": "^6.24.1",
+        "babel-plugin-transform-class-properties": "^6.24.1",
+        "babel-plugin-transform-decorators-legacy": "^1.3.4",
+        "babel-plugin-transform-export-extensions": "^6.22.0",
+        "babel-plugin-transform-object-rest-spread": "^6.26.0",
+        "babel-plugin-transform-runtime": "^6.23.0",
+        "babel-polyfill": "^6.26.0",
+        "babel-preset-env": "^1.6.1",
+        "babel-preset-es2015": "^6.24.1",
+        "babel-preset-react": "^6.24.1"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "npm run tsc-decorators && npm run run-server",
+        "tsc-decorators": "tsc --target ES6",
+        "tsc-decorators-decortors": "tsc --target ES5 --experimentalDecorators",
+        "run-server": "node ./dist/website"
+    },
+    "author": "",
+    "license": "ISC"
 }
