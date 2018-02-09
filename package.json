@@ -33,7 +33,7 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "npm run tsc-decorators && npm run run-server",
-        "tsc-decorators": "tsc --target ES6",
+        "tsc-decorators": "tsc --target ES5",
         "tsc-decorators-decortors": "tsc --target ES5 --experimentalDecorators",
         "run-server": "node ./dist/website"
     },

@@ -65,12 +65,15 @@ export class ArticleController {
         if (isEmpty(article.content)) {
             return res.sendError('内容不能为空');
         }
+        if (isNotInterger(article.articleTypeId)) {
+            return res.sendError('articleTypeId类型异常');
+        }
         var users = new Users();
-        users.id = session.users.id;
+        users.id = 1;//session.users.id;
         article.users = users;
         if (article.type == 1) {
             if (isEmpty(article.picture)) {
-                return res.sendError('题图不能为空');
+                // return res.sendError('题图不能为空');
             }
         }
         let nowTime = Format.date(new Date(), 'yyyy-MM-dd hh:mm:ss');
@@ -78,10 +81,12 @@ export class ArticleController {
         if (!article.publishDate) {
             article.publishDate = nowTime;
         }
+        if (!article.id) {
+            article.createDate = nowTime;
+        }
         if (!article.docreader || !article.docreader.replace(/\s/g, '')) {
             article.docreader = article.content.substr(0, 200);
         }
-        console.log(article)
         res.sendSuccess(await articleService.saveOrUpdateArticle(article));
     }
 
