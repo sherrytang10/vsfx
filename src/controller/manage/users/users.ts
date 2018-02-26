@@ -1,4 +1,4 @@
-import { Controller, Get, Post, /*Validation, */Crypto, isNotInterger, isEmpty, isFalse, Format } from '../../../@common';
+import { Controller, Get, Post, /*Validation, */Crypto, isNotInteger, isEmpty, isFalse, Format } from '../../../@common';
 import { UsersService } from '../../../service/users/users';
 import { ArticleService } from '../../../service/article/article';
 import { Users } from '../../../entity/users';
@@ -107,7 +107,7 @@ export class UsersController {
         if (isFalse(id)) {
             return res.sendError('id不能为空')
         }
-        if (isNotInterger(+id)) {
+        if (isNotInteger(+id)) {
             return res.sendError('入参类型错误')
         }
         res.sendSuccess(await usersService.disabledUsers(id));
@@ -123,7 +123,7 @@ export class UsersController {
         if (isFalse(id)) {
             return res.sendError('id不能为空')
         }
-        if (isNotInterger(+id)) {
+        if (isNotInteger(+id)) {
             return res.sendError('入参类型错误')
         }
         res.sendSuccess(await usersService.publishUsers(id));
@@ -142,7 +142,7 @@ export class UsersController {
         if (isFalse(id)) {
             return res.sendError('id不能为空')
         }
-        if (isNotInterger(+id)) {
+        if (isNotInteger(+id)) {
             return res.sendError('入参类型错误')
         }
         await articleService.deletedArticlesByUsersId(id);

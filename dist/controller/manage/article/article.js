@@ -69,16 +69,16 @@ var ArticleController = /** @class */ (function () {
                 switch (_f.label) {
                     case 0:
                         articleTypeId = body.articleTypeId, type = body.type, desabled = body.desabled, nickName = body.nickName, _b = body.pageSize, pageSize = _b === void 0 ? 20 : _b, _c = body.currPage, currPage = _c === void 0 ? 1 : _c;
-                        if (articleTypeId && _common_1.isNotInterger(articleTypeId)) {
+                        if (articleTypeId && _common_1.isNotInteger(articleTypeId)) {
                             return [2 /*return*/, res.sendError('分类id类型错误')];
                         }
-                        if (type && _common_1.isNotInterger(type)) {
+                        if (type && _common_1.isNotInteger(type)) {
                             return [2 /*return*/, res.sendError('type类型错误')];
                         }
-                        if (articleTypeId && _common_1.isNotInterger(desabled)) {
+                        if (articleTypeId && _common_1.isNotInteger(desabled)) {
                             return [2 /*return*/, res.sendError('desabled类型错误')];
                         }
-                        if (_common_1.isNotInterger(pageSize) && _common_1.isNotInterger(currPage)) {
+                        if (_common_1.isNotInteger(pageSize) && _common_1.isNotInteger(currPage)) {
                             return [2 /*return*/, res.sendError('分页入参类型错误')];
                         }
                         // res.sendSuccess(await ArticleService.getAnyAll('article', { column: ['id'], where: { disabled: 1, id: 2 } }))
@@ -106,7 +106,7 @@ var ArticleController = /** @class */ (function () {
             return __generator(this, function (_d) {
                 switch (_d.label) {
                     case 0:
-                        if (!_common_1.isNotInterger(+id)) return [3 /*break*/, 1];
+                        if (!_common_1.isNotInteger(+id)) return [3 /*break*/, 1];
                         res.sendError('入参类型错误');
                         return [3 /*break*/, 3];
                     case 1:
@@ -134,7 +134,7 @@ var ArticleController = /** @class */ (function () {
                         if (_common_1.isEmpty(article.content)) {
                             return [2 /*return*/, res.sendError('内容不能为空')];
                         }
-                        if (_common_1.isNotInterger(article.articleTypeId)) {
+                        if (_common_1.isNotInteger(article.articleTypeId)) {
                             return [2 /*return*/, res.sendError('articleTypeId类型异常')];
                         }
                         users = new users_1.Users();
@@ -173,7 +173,7 @@ var ArticleController = /** @class */ (function () {
                 switch (_d.label) {
                     case 0:
                         id = query.id;
-                        if (_common_1.isNotInterger(id)) {
+                        if (_common_1.isNotInteger(id)) {
                             return [2 /*return*/, res.sendError('入参类型错误')];
                         }
                         if (_common_1.isFalse(id)) {
@@ -196,7 +196,7 @@ var ArticleController = /** @class */ (function () {
                 switch (_d.label) {
                     case 0:
                         id = query.id;
-                        if (_common_1.isNotInterger(id)) {
+                        if (_common_1.isNotInteger(id)) {
                             return [2 /*return*/, res.sendError('入参类型错误')];
                         }
                         if (_common_1.isFalse(id)) {
@@ -219,7 +219,7 @@ var ArticleController = /** @class */ (function () {
                 switch (_d.label) {
                     case 0:
                         id = query.id;
-                        if (_common_1.isNotInterger(id)) {
+                        if (_common_1.isNotInteger(id)) {
                             return [2 /*return*/, res.sendError('入参类型错误')];
                         }
                         if (_common_1.isFalse(id)) {

@@ -54,7 +54,7 @@ var UsersController = /** @class */ (function () {
             return __generator(this, function (_d) {
                 switch (_d.label) {
                     case 0:
-                        if (_common_2.isNotInterger(+id)) {
+                        if (_common_2.isNotInteger(+id)) {
                             return [2 /*return*/, res.sendError('入参类型错误')];
                         }
                         usersService = new users_1.UsersService();

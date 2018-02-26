@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isInterger = function (num) {
+exports.isInteger = function (num) {
     return /^[-+]?\d+$/.test(num) /* && typeof num == 'number' */;
 };
-exports.isNotInterger = function (num) {
-    return !exports.isInterger(num);
+exports.isNotInteger = function (num) {
+    return !exports.isInteger(num);
 };
 exports.isCompleteDate = function (date) {
     return /^[12][0-9]{3}-(([0][1-9])|([1][0-2]))-[0-3]\d( [0-2]\d:[0-5]\d:[0-5]\d)?$/.test(date);
@@ -58,8 +58,8 @@ exports.isFunction = function (obj) {
     return typeof obj == 'function';
 };
 exports.default = {
-    isInterger: exports.isInterger,
-    isNotInterger: exports.isNotInterger,
+    isInteger: exports.isInteger,
+    isNotInteger: exports.isNotInteger,
     isCompleteDate: exports.isCompleteDate,
     isNotCompleteDate: exports.isNotCompleteDate,
     isUndefined: exports.isUndefined,

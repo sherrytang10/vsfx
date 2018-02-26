@@ -59,17 +59,17 @@ export class TestController {
 
 ### 三、Dto文件里面是什么
 ```
-import { isInterger } from '../../lib/@common';
+import { isInteger } from '../../lib/@common';
 
 export class TestfindDto {
-    @isInterger()
+    @isInteger()
     pro1;
     pro2;
 }
 ```
-`如代码就是一个普通的class， 重点在于@isNotInterger()对属性的修饰,告诉程序这个属性需要验证，并且他必须是interger类型，当你的请求入参对象中包含相同名称的入参，则会进行验证。如果验证不通过会直接返回{status:0,errmsg:'必须是int类型'}`
+`如代码就是一个普通的class， 重点在于@isNotInteger()对属性的修饰,告诉程序这个属性需要验证，并且他必须是interger类型，当你的请求入参对象中包含相同名称的入参，则会进行验证。如果验证不通过会直接返回{status:0,errmsg:'必须是int类型'}`
 `{status:0,errmsg:'必须是int类型'} 格式是个人自己定义的`
-`以isInterger为例： '必须是int类型'是isInterger的默认提示，也可以自定义提示文案@isInterger('自定义的文案')`
+`以isInterger为例： '必须是int类型'是isInterger的默认提示，也可以自定义提示文案@isInteger('自定义的文案')`
 `如上所例子，当客户端发起get请求http://host:prot/rest/test/find?pro1=a时，会返回验证失败`
 
 

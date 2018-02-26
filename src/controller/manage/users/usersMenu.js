@@ -1,6 +1,6 @@
 // import { formatArrayToMenu } from '../../../lib/utils/format';
 
-import { Controller, Get, Post, isNotInterger, isEmpty, Format } from '../../../@common';
+import { Controller, Get, Post, isNotInteger, isEmpty, Format } from '../../../@common';
 import { UsersMenuService } from '../../../service/users/usersMenu';
 import { Users } from '../../../entity/users';
 const usersMenuService = new UsersMenuService();

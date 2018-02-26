@@ -22,8 +22,8 @@ export class BaseService implements BaseServiceInterface {
      * @memberof ArticleInterface
      */
     async disabledAny(Model: any, id: number) {
-        let exe = await this.getRepository(Model).updateById(id, { disabled: 0 });
-        return exe ? '禁用成功' : '禁用失败';
+        await this.getRepository(Model).updateById(id, { disabled: 0 });
+        return '操作成功';
     }
     /**
      * 恢复逻辑删除
@@ -32,8 +32,8 @@ export class BaseService implements BaseServiceInterface {
      * @memberof ArticleInterface
      */
     async publishAny(Model: any, id: number) {
-        let exe = await this.getRepository(Model).updateById(id, { disabled: 1 });
-        return exe ? '发布成功' : '发布失败';
+        await this.getRepository(Model).updateById(id, { disabled: 1 });
+        return '操作成功';
     }
 
     /**

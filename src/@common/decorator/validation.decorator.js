@@ -17,21 +17,21 @@ export const Validation = (Dto) => {
 export const IsNotEmpty = (option) => {
     return (target, name, descriptor) => {
         console.log(target, name, descriptor)
-        // if (isFunction(descriptor.initializer)) {
-        //     let src_method = descriptor.initializer();
-        //     descriptor.initializer = () => (variable) => {
-        //         let result = {};
-        //         if (isFunction(src_method)) {
-        //             result = src_method() || {};
-        //         }
-        //         return Object.assign(result, __returnResult(variable, 'isNotEmpty', { option, _default: `'${name}'不能为空`, name }));
-        //     };
-        // } else {
-        //     descriptor.initializer = () => (variable) => {
-        //         return __returnResult(variable, 'isNotEmpty', { option, _default: `'${name}'不能为空`, name });
-        //     };
-        // }
-        // return descriptor;
+            // if (isFunction(descriptor.initializer)) {
+            //     let src_method = descriptor.initializer();
+            //     descriptor.initializer = () => (variable) => {
+            //         let result = {};
+            //         if (isFunction(src_method)) {
+            //             result = src_method() || {};
+            //         }
+            //         return Object.assign(result, __returnResult(variable, 'isNotEmpty', { option, _default: `'${name}'不能为空`, name }));
+            //     };
+            // } else {
+            //     descriptor.initializer = () => (variable) => {
+            //         return __returnResult(variable, 'isNotEmpty', { option, _default: `'${name}'不能为空`, name });
+            //     };
+            // }
+            // return descriptor;
         descriptor.initializer = () => (variable) => {
             let result = __returnCompa(descriptor)
             return Object.assign(result, __returnResult(variable, 'isNotEmpty', { option, _default: `'${name}'不能为空`, name }));
@@ -41,20 +41,20 @@ export const IsNotEmpty = (option) => {
         return descriptor;
     }
 };
-export const IsInterger = function (option) {
-    return function (target, name, descriptor) {
-        // descriptor.initializer = () => (variable) => __returnResult(variable, 'isInterger', { option, _default: `'${name}'必须是int类型`, name });
+export const isInteger = function(option) {
+    return function(target, name, descriptor) {
+        // descriptor.initializer = () => (variable) => __returnResult(variable, 'isInteger', { option, _default: `'${name}'必须是int类型`, name });
         // return descriptor;
         descriptor.initializer = () => (variable) => {
             let result = __returnCompa(descriptor)
-            return Object.assign(result, __returnResult(variable, 'isInterger', { option, _default: `'${name}'必须是int类型`, name }));
+            return Object.assign(result, __returnResult(variable, 'isInteger', { option, _default: `'${name}'必须是int类型`, name }));
         }
         descriptor.writable = true;
         descriptor.enumerable = true;
         return descriptor;
     }
 };
-export const IsEmail = (option?) => {
+export const IsEmail = (option ? ) => {
     return (target: any, name: string, descriptor) => {
         descriptor.initializer = () => (variable) => {
             let result = __returnCompa(descriptor)
@@ -117,10 +117,10 @@ export const Length = (...arg) => {
 
     let [arg1, arg2, arg3] = arg;
 
-    if (!arg1 || __Validate.isNotInterger(arg1)) {
+    if (!arg1 || __Validate.isNotInteger(arg1)) {
         argErr = false;
         option = { message: `validate @Length argument type is err` };
-    } else if (__Validate.isInterger(arg1) && __Validate.isInterger(arg2)) {
+    } else if (__Validate.isInteger(arg1) && __Validate.isInteger(arg2)) {
         option.minLength = arg1;
         option.maxLength = arg2;
         if (__Validate.isNotEmpty(arg3)) {
@@ -135,7 +135,7 @@ export const Length = (...arg) => {
                 option = { message: `validate @Length argument 3 type is err` };
             }
         }
-    } else if (__Validate.isInterger(arg1)) {
+    } else if (__Validate.isInteger(arg1)) {
         option.length = arg1;
         if (__Validate.isNotEmpty(arg2)) {
             if (isString(arg2)) {
@@ -168,9 +168,9 @@ export const Length = (...arg) => {
     //     option = __getOptions({ maxLength: arg2, minLength: arg1, message: arg3 });
     // } else if (arg.length == 2) {
     //     let [arg1, arg2] = arg;
-    //     if (__Validate.isInterger(arg1) && __Validate.isInterger(arg2)) {
+    //     if (__Validate.isInteger(arg1) && __Validate.isInteger(arg2)) {
     //         option = { maxLength: arg2, minLength: arg1 };
-    //     } else if (__Validate.isInterger(arg1)) {
+    //     } else if (__Validate.isInteger(arg1)) {
     //         if (isString(arg2)) {
     //             arg2 = { message: arg2 };
     //             option = { length: arg1, message: arg2 };
@@ -186,7 +186,7 @@ export const Length = (...arg) => {
     //     }
     // } else if (arg.length == 1) {
     //     arg1 = arg[0];
-    //     if (__Validate.isInterger(arg1)) {
+    //     if (__Validate.isInteger(arg1)) {
     //         option = { length: arg1 };
     //     } else {
     //         option = { message: `validate @Length argument 1 type is err` };
@@ -257,7 +257,7 @@ function __publicCheck(variable, option, name): CheckResult {
     // 条件验证 通过后还需进行函数验证，所以验证通过不返回true
     if (__Validate.isNotEmpty(length)) {
         // 存在长度
-        if (__Validate.isNotInterger(length)) {
+        if (__Validate.isNotInteger(length)) {
             return __errmsg(`length 必须是int类型`);
         }
         if (variable.toString().length != length) {
@@ -265,10 +265,10 @@ function __publicCheck(variable, option, name): CheckResult {
         }
     } else if (__Validate.isNotEmpty(maxLength) && __Validate.isNotEmpty(minLength)) {
         // 不存在长度 但是存在最大和最小长度
-        if (__Validate.isNotInterger(maxLength)) {
+        if (__Validate.isNotInteger(maxLength)) {
             return __errmsg(`maxLength 必须是int类型`);
         }
-        if (__Validate.isNotInterger(minLength)) {
+        if (__Validate.isNotInteger(minLength)) {
             return __errmsg(`minLength 必须是int类型`);
         }
         let _length = variable.toString().length;

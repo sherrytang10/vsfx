@@ -89,7 +89,7 @@ var ArticleTypeService = /** @class */ (function (_super) {
             var query;
             return __generator(this, function (_a) {
                 query = 'select id, name from article_type where 1=1';
-                if (_common_1.isInterger(disabled)) {
+                if (_common_1.isInteger(disabled)) {
                     query += " and disabled=" + disabled;
                 }
                 return [2 /*return*/, this.execute(query)];

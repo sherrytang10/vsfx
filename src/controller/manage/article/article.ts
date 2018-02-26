@@ -1,4 +1,4 @@
-import { Controller, Get, Post, isNotInterger, isEmpty, isFalse, Format } from '../../../@common';
+import { Controller, Get, Post, isNotInteger, isEmpty, isFalse, Format } from '../../../@common';
 import { ArticleService } from '../../../service/article/article';
 import { Article } from '../../../entity/article';
 import { Users } from '../../../entity/users';
@@ -22,16 +22,16 @@ export class ArticleController {
     @Post('/findAll')
     async findAllArticle({ body }, res) {
         let { articleTypeId, type, desabled, nickName, pageSize = 20, currPage = 1 } = body;
-        if (articleTypeId && isNotInterger(articleTypeId)) {
+        if (articleTypeId && isNotInteger(articleTypeId)) {
             return res.sendError('分类id类型错误');
         }
-        if (type && isNotInterger(type)) {
+        if (type && isNotInteger(type)) {
             return res.sendError('type类型错误');
         }
-        if (articleTypeId && isNotInterger(desabled)) {
+        if (articleTypeId && isNotInteger(desabled)) {
             return res.sendError('desabled类型错误');
         }
-        if (isNotInterger(pageSize) && isNotInterger(currPage)) {
+        if (isNotInteger(pageSize) && isNotInteger(currPage)) {
             return res.sendError('分页入参类型错误');
         }
         // res.sendSuccess(await ArticleService.getAnyAll('article', { column: ['id'], where: { disabled: 1, id: 2 } }))
@@ -47,7 +47,7 @@ export class ArticleController {
      */
     @Get('/info/:id')
     async getArticleInfoById({ params: { id } }, res) {
-        if (isNotInterger(+id)) {
+        if (isNotInteger(+id)) {
             res.sendError('入参类型错误')
         } else {
             res.sendSuccess(await articleService.getArticleInfoById(id))
@@ -65,7 +65,7 @@ export class ArticleController {
         if (isEmpty(article.content)) {
             return res.sendError('内容不能为空');
         }
-        if (isNotInterger(article.articleTypeId)) {
+        if (isNotInteger(article.articleTypeId)) {
             return res.sendError('articleTypeId类型异常');
         }
         var users = new Users();
@@ -93,7 +93,7 @@ export class ArticleController {
     @Get('/pulish')
     async pulishArticle({ query }, res) {
         let { id } = query;
-        if (isNotInterger(id)) {
+        if (isNotInteger(id)) {
             return res.sendError('入参类型错误');
         }
         if (isFalse(id)) {
@@ -104,7 +104,7 @@ export class ArticleController {
     @Get('/disabled')
     async disabledArticle({ query }, res) {
         let { id } = query;
-        if (isNotInterger(id)) {
+        if (isNotInteger(id)) {
             return res.sendError('入参类型错误');
         }
         if (isFalse(id)) {
@@ -115,7 +115,7 @@ export class ArticleController {
     @Get('/delete')
     async deleteArticle({ query }, res) {
         let { id } = query;
-        if (isNotInterger(id)) {
+        if (isNotInteger(id)) {
             return res.sendError('入参类型错误');
         }
         if (isFalse(id)) {

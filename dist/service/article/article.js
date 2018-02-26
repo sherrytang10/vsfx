@@ -68,12 +68,17 @@ var ArticleService = /** @class */ (function (_super) {
     ArticleService.prototype.findAllArticle = function (_a) {
         var _b = _a.articleTypeId, articleTypeId = _b === void 0 ? 0 : _b, _c = _a.type, type = _c === void 0 ? 0 : _c, _d = _a.nickName, nickName = _d === void 0 ? '' : _d, _e = _a.desabled, desabled = _e === void 0 ? null : _e, _f = _a.pageSize, pageSize = _f === void 0 ? 20 : _f, _g = _a.currPage, currPage = _g === void 0 ? 1 : _g;
         return __awaiter(this, void 0, void 0, function () {
-            var _h, articleList, total;
-            return __generator(this, function (_j) {
-                switch (_j.label) {
-                    case 0: return [4 /*yield*/, this.execute("call getArticleList(" + articleTypeId + ", " + type + ", " + desabled + "," + (nickName || null) + "," + currPage + ", " + pageSize + ")")];
+            var query, articleList, total;
+            return __generator(this, function (_h) {
+                switch (_h.label) {
+                    case 0:
+                        query = this.getRepository(article_1.Article).createQueryBuilder("article");
+                        return [4 /*yield*/, query.skip(currPage - 1).take(pageSize).getMany()];
                     case 1:
-                        _h = _j.sent(), articleList = _h[0], total = _h[1][0].total;
+                        articleList = _h.sent();
+                        return [4 /*yield*/, this.getRepository(article_1.Article).count()];
+                    case 2:
+                        total = _h.sent();
                         return [2 /*return*/, { articleList: articleList, total: total }];
                 }
             });

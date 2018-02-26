@@ -1,4 +1,5 @@
-import { Controller, Get, isNotInterger } from '../../@common';
+
+import { Controller, Get, isNotInteger } from '../../@common';
 import { TestService } from '../../service/test';
 import { Test } from '../../entity/test';
 @Controller('/test')

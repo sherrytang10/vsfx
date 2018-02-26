@@ -201,7 +201,7 @@ var UsersController = /** @class */ (function () {
                         if (_common_1.isFalse(id)) {
                             return [2 /*return*/, res.sendError('id不能为空')];
                         }
-                        if (_common_1.isNotInterger(+id)) {
+                        if (_common_1.isNotInteger(+id)) {
                             return [2 /*return*/, res.sendError('入参类型错误')];
                         }
                         _c = (_b = res).sendSuccess;
@@ -228,7 +228,7 @@ var UsersController = /** @class */ (function () {
                         if (_common_1.isFalse(id)) {
                             return [2 /*return*/, res.sendError('id不能为空')];
                         }
-                        if (_common_1.isNotInterger(+id)) {
+                        if (_common_1.isNotInteger(+id)) {
                             return [2 /*return*/, res.sendError('入参类型错误')];
                         }
                         _c = (_b = res).sendSuccess;
@@ -258,7 +258,7 @@ var UsersController = /** @class */ (function () {
                         if (_common_1.isFalse(id)) {
                             return [2 /*return*/, res.sendError('id不能为空')];
                         }
-                        if (_common_1.isNotInterger(+id)) {
+                        if (_common_1.isNotInteger(+id)) {
                             return [2 /*return*/, res.sendError('入参类型错误')];
                         }
                         return [4 /*yield*/, articleService.deletedArticlesByUsersId(id)];

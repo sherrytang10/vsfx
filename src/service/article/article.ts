@@ -15,8 +15,13 @@ export class ArticleService extends BaseService implements ArticleInterface {
      * @memberof ArticleInterface
      */
     async findAllArticle({ articleTypeId = 0, type = 0, nickName = '', desabled = null, pageSize = 20, currPage = 1 }: findAllArticleD) {
-        let [articleList, [{ total }]] = await this.execute(`call getArticleList(${articleTypeId}, ${type}, ${desabled},${nickName || null},${currPage}, ${pageSize})`);
-        return { articleList, total }
+        // let [articleList, [{ total }]] = await this.execute(`call getArticleList(${articleTypeId}, ${type}, ${desabled},${nickName || null},${currPage}, ${pageSize})`);
+        // return { articleList, total }
+        let query = this.getRepository(Article).createQueryBuilder("article");
+        let articleList = await query.skip(currPage - 1).take(pageSize).getMany();
+
+        let total = await this.getRepository(Article).count();
+        return { articleList, total };
     }
 
     /**

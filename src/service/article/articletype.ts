@@ -1,5 +1,5 @@
 
-import { Service, isInterger } from '../../@common';
+import { Service, isInteger } from '../../@common';
 import { BaseService } from '../BaseService';
 import { ArticleTypeInterface } from './articleType.d';
 import { ArticleType } from 'entity/articleType';
@@ -33,7 +33,7 @@ export class ArticleTypeService extends BaseService implements ArticleTypeInterf
      */
     async findAll(disabled: number): Promise<Array<ArticleType>> {
         let query = 'select id, name from article_type where 1=1';
-        if (isInterger(disabled)) {
+        if (isInteger(disabled)) {
             query += ` and disabled=${disabled}`;
         }
         return this.execute(query);

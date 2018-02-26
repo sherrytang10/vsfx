@@ -41,86 +41,53 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _common_1 = require("../@common");
-var BaseService = /** @class */ (function () {
-    function BaseService() {
+var _common_1 = require("../../../@common");
+var articleType_1 = require("../../../service/article/articleType");
+/**
+ * 文章controller
+ *
+ * @export
+ * @class ArticleController
+ */
+var articleTypeService = new articleType_1.ArticleTypeService();
+var ArticleTypeController = /** @class */ (function () {
+    function ArticleTypeController() {
     }
     /**
-     * 添加或保存
+     * 获取文章类型列表
      *
-     * @param {Article} article
-     * @memberof ArticleInterface
+     * @param {any} { query }
+     * @param {any} res
+     * @memberof ArticleTypeController
      */
-    BaseService.prototype.saveOrUpdateAny = function (Model, article) {
+    ArticleTypeController.prototype.findAllArticleType = function (_a, res) {
+        var body = _a.body;
         return __awaiter(this, void 0, void 0, function () {
-            var exe;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getRepository(Model).save(article)];
+            var _b, desabled, _c, _d;
+            return __generator(this, function (_e) {
+                switch (_e.label) {
+                    case 0:
+                        _b = body.desabled, desabled = _b === void 0 ? 1 : _b;
+                        if (_common_1.isNotInteger(desabled)) {
+                            return [2 /*return*/, res.sendError('入参类型异常')];
+                        }
+                        // res.sendSuccess(await ArticleService.getAnyAll('article', { column: ['id'], where: { disabled: 1, id: 2 } }))
+                        _d = (_c = res).sendSuccess;
+                        return [4 /*yield*/, articleTypeService.findAll(desabled)];
                     case 1:
-                        exe = _a.sent();
-                        return [2 /*return*/, exe ? '操作成功' : '操作失败'];
+                        // res.sendSuccess(await ArticleService.getAnyAll('article', { column: ['id'], where: { disabled: 1, id: 2 } }))
+                        _d.apply(_c, [_e.sent()]);
+                        return [2 /*return*/];
                 }
             });
         });
     };
-    /**
-     * 逻辑删除
-     *
-     * @param {(number | Article)}
-     * @memberof ArticleInterface
-     */
-    BaseService.prototype.disabledAny = function (Model, id) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getRepository(Model).updateById(id, { disabled: 0 })];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/, '操作成功'];
-                }
-            });
-        });
-    };
-    /**
-     * 恢复逻辑删除
-     *
-     * @param {(number | Article)}
-     * @memberof ArticleInterface
-     */
-    BaseService.prototype.publishAny = function (Model, id) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getRepository(Model).updateById(id, { disabled: 1 })];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/, '操作成功'];
-                }
-            });
-        });
-    };
-    /**
-     * 物理删除
-     *
-     * @param {(number | Article)} any
-     * @memberof ArticleInterface
-     */
-    BaseService.prototype.deletedAny = function (Model, id) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getRepository(Model).removeById(id)];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/, '操作成功'];
-                }
-            });
-        });
-    };
-    BaseService = __decorate([
-        _common_1.Service()
-    ], BaseService);
-    return BaseService;
+    __decorate([
+        _common_1.Get('/findAll')
+    ], ArticleTypeController.prototype, "findAllArticleType", null);
+    ArticleTypeController = __decorate([
+        _common_1.Controller('/articletype')
+    ], ArticleTypeController);
+    return ArticleTypeController;
 }());
-exports.BaseService = BaseService;
+exports.ArticleTypeController = ArticleTypeController;

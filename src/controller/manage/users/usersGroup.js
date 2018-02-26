@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Validation, Crypto } from '../../../lib/@common';
-import { isNotInterger, isEmpty } from '../../../lib/@common/validate';
+import { isNotInteger, isEmpty } from '../../../lib/@common/validate';
 import { UsersMenuService } from '../../../service/users/usersMenu';
 import { formatArrayToMenu } from '../../../lib/utils/format';
 @Controller('/usersgroup')

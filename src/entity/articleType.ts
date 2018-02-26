@@ -2,6 +2,7 @@ import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn } from 'typeor
 import { BaseEntity } from './BaseEntity';
 @Entity('article_type')
 export class ArticleType {
+    @PrimaryGeneratedColumn()
     id: number;
     @Column('int', { default: 1, comment: '1可用，0禁用' })
     disabled: number;

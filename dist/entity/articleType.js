@@ -11,6 +11,9 @@ var ArticleType = /** @class */ (function () {
     function ArticleType() {
     }
     __decorate([
+        typeorm_1.PrimaryGeneratedColumn()
+    ], ArticleType.prototype, "id", void 0);
+    __decorate([
         typeorm_1.Column('int', { default: 1, comment: '1可用，0禁用' })
     ], ArticleType.prototype, "disabled", void 0);
     __decorate([
