@@ -110,13 +110,12 @@ var BaseService = /** @class */ (function () {
      */
     BaseService.prototype.deletedAny = function (Model, id) {
         return __awaiter(this, void 0, void 0, function () {
-            var exe;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getRepository(Model).removeById(id)];
                     case 1:
-                        exe = _a.sent();
-                        return [2 /*return*/, exe ? '删除成功' : '删除失败'];
+                        _a.sent();
+                        return [2 /*return*/, '操作成功'];
                 }
             });
         });

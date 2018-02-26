@@ -7,6 +7,7 @@ import { Article } from '../../entity/article';
 export class ArticleService extends BaseService implements ArticleInterface {
     execute;
     getRepository;
+    getConnection;
     /**
      * 获取所有文章列表
      * 
@@ -79,6 +80,10 @@ export class ArticleService extends BaseService implements ArticleInterface {
         // let exe = await this.getRepository(Article).removeById(id);
         // return exe ? '删除成功' : '删除失败';
         return await super.deletedAny(Article, id);
+    }
+    async deletedArticlesByUsersId(usersId: number) {
+        await this.getConnection().createQueryBuilder().delete().from(Article).where("users.id = :usersId", { usersId }).execute();
+        return '操作成功';
     }
 
 }

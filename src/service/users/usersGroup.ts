@@ -1,13 +1,12 @@
-import { Service } from '../../lib/@common/decorator';
-import { isInteger } from '../../lib/utils/validate';
+
+import { Service, isInteger } from '../../@common';
 import { BaseService } from '../BaseService';
-import $sql from './usersGroupMapping';
+import { UsersInterface, UsersOption } from './users.d';
+import { Users } from '../../entity/users';
+
 @Service()
 export class UsersGroupService extends BaseService {
-    constructor() {
-        super($sql);
-    }
-
+    execute;
     /**
      * 获取用户组列表-查询条件
      * 

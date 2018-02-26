@@ -177,6 +177,18 @@ var ArticleService = /** @class */ (function (_super) {
             });
         });
     };
+    ArticleService.prototype.deletedArticlesByUsersId = function (usersId) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getConnection().createQueryBuilder().delete().from(article_1.Article).where("users.id = :usersId", { usersId: usersId }).execute()];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/, '操作成功'];
+                }
+            });
+        });
+    };
     ArticleService = __decorate([
         _common_1.Service()
     ], ArticleService);

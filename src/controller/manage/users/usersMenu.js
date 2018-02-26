@@ -1,7 +1,9 @@
-import { Controller, Get, Post, Validation, Crypto } from '../../../lib/@common';
-import { isNotInterger, isEmpty } from '../../../lib/@common/validate';
+// import { formatArrayToMenu } from '../../../lib/utils/format';
+
+import { Controller, Get, Post, isNotInterger, isEmpty, Format } from '../../../@common';
 import { UsersMenuService } from '../../../service/users/usersMenu';
-import { formatArrayToMenu } from '../../../lib/utils/format';
+import { Users } from '../../../entity/users';
+const usersMenuService = new UsersMenuService();
 @Controller('/usersmenu')
 export class usersController {
     /**
@@ -12,7 +14,7 @@ export class usersController {
     @Get('/getMenuList')
     async getMenuListByParam(req, res) {
         let roleId = (req.session.users || {}).roleId || 1;
-        let results = formatArrayToMenu(await UsersMenuService.getMenuListByParam({ roleId }));
+        let results = formatArrayToMenu(await usersMenuService.getMenuListByParam({ roleId }));
         res.sendSuccess(results);
     }
 
@@ -36,7 +38,7 @@ export class usersController {
         if (isNotInteger(disabled)) {
             return res.sendError('入参类型错误');
         }
-        let menuList = await UsersMenuService.getUsersMenuList({ menuName, parentId, isMenu, disabled });
+        let menuList = await usersMenuService.getUsersMenuList({ menuName, parentId, isMenu, disabled });
         menuList = formatMenuMap(menuList);
         res.sendSuccess(menuList)
     }
@@ -80,11 +82,11 @@ export class usersController {
             }
             //修改操作
             params = params.concat(id);
-            results = await UsersMenuService.saveOrUpdateAny(params, +id);
+            results = await usersMenuService.saveOrUpdateAny(params, +id);
         } else {
             //添加操作
             params = params.concat(__loginUM);
-            results = await UsersMenuService.saveUsersMenu(params);
+            results = await usersMenuService.saveUsersMenu(params);
         }
         // let results = await UsersMenuService.saveOrUpdateAny(params, +id);
         return res.sendSuccess(results)
@@ -110,7 +112,7 @@ export class usersController {
         if (isFalse(id)) {
             return res.sendError('id不能为空');
         }
-        let results = await UsersMenuService.publishAny(__loginUM, id);
+        let results = await usersMenuService.publishAny(__loginUM, id);
         return res.sendSuccess(results)
     }
 
@@ -133,11 +135,11 @@ export class usersController {
         if (isFalse(id)) {
             return res.sendError('id不能为空')
         }
-        let usersMenus = await UsersMenuService.getUsersMenuList({ parentId: id });
+        let usersMenus = await usersMenuService.getUsersMenuList({ parentId: id });
         if (usersMenus.length > 0) {
             return res.sendError('当前菜单项存在子菜单，请先重新为子菜单分配菜单项后在删除')
         }
-        let results = await UsersMenuService.disabledAny(__loginUM, id);
+        let results = await usersMenuService.disabledAny(__loginUM, id);
         return res.sendSuccess(results)
     }
 
@@ -160,11 +162,11 @@ export class usersController {
         if (isFalse(id)) {
             return res.sendError('id不能为空')
         }
-        let usersMenus = await UsersMenuService.getUsersMenuList({ parentId: +id });
+        let usersMenus = await usersMenuService.getUsersMenuList({ parentId: +id });
         if (usersMenus.length > 0) {
             return res.sendError('当前菜单项存在子菜单，请先重新为子菜单分配菜单项后在删除')
         }
-        let results = await UsersMenuService.deleteAny(id);
+        let results = await usersMenuService.deleteAny(id);
         return res.sendSuccess(results)
     }
 
@@ -186,7 +188,7 @@ export class usersController {
         if (!/^\d+\,\d+(\|\d+\,\d+)?/.test(arr.join('|'))) {
             return res.sendError('入参格式错误,[[int]]');
         }
-        let results = await UsersMenuService.saveSortUsersMenu(arr, __loginUM);
+        let results = await usersMenuService.saveSortUsersMenu(arr, __loginUM);
         return res.sendSuccess(results);
     }
 }

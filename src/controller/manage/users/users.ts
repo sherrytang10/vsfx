@@ -1,8 +1,10 @@
 import { Controller, Get, Post, /*Validation, */Crypto, isNotInterger, isEmpty, isFalse, Format } from '../../../@common';
 import { UsersService } from '../../../service/users/users';
+import { ArticleService } from '../../../service/article/article';
 import { Users } from '../../../entity/users';
 
 const usersService = new UsersService();
+const articleService = new ArticleService();
 @Controller('/users')
 export class UsersController {
     /**
@@ -143,6 +145,7 @@ export class UsersController {
         if (isNotInterger(+id)) {
             return res.sendError('入参类型错误')
         }
+        await articleService.deletedArticlesByUsersId(id);
         res.sendSuccess(await usersService.deletedUsers(id));
     }
 }

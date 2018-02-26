@@ -55,4 +55,11 @@ export interface ArticleInterface {
      * @memberof ArticleInterface
      */
     deletedArticle(any: number | Article);
+    /**
+     * 根据用户id删除
+     * 
+     * @param {number} usersId 
+     * @memberof ArticleInterface
+     */
+    deletedArticlesByUsersId(usersId: number);
 }

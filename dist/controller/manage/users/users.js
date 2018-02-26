@@ -43,8 +43,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var _common_1 = require("../../../@common");
 var users_1 = require("../../../service/users/users");
+var article_1 = require("../../../service/article/article");
 var users_2 = require("../../../entity/users");
 var usersService = new users_1.UsersService();
+var articleService = new article_1.ArticleService();
 var UsersController = /** @class */ (function () {
     function UsersController() {
     }
@@ -259,9 +261,12 @@ var UsersController = /** @class */ (function () {
                         if (_common_1.isNotInterger(+id)) {
                             return [2 /*return*/, res.sendError('入参类型错误')];
                         }
+                        return [4 /*yield*/, articleService.deletedArticlesByUsersId(id)];
+                    case 1:
+                        _d.sent();
                         _c = (_b = res).sendSuccess;
                         return [4 /*yield*/, usersService.deletedUsers(id)];
-                    case 1:
+                    case 2:
                         _c.apply(_b, [_d.sent()]);
                         return [2 /*return*/];
                 }

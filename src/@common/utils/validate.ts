@@ -1,8 +1,8 @@
-export const isInterger = (num: string | any) => {
+export const isInteger = (num: string | any) => {
     return /^[-+]?\d+$/.test(num) /* && typeof num == 'number' */;
 }
-export const isNotInterger = (num: string | any) => {
-    return !isInterger(num);
+export const isNotInteger = (num: string | any) => {
+    return !isInteger(num);
 }
 export const isCompleteDate = (date: string) => {
     return /^[12][0-9]{3}-(([0][1-9])|([1][0-2]))-[0-3]\d( [0-2]\d:[0-5]\d:[0-5]\d)?$/.test(date);
@@ -56,8 +56,8 @@ export const isFunction = (obj: any) => {
     return typeof obj == 'function';
 }
 export default {
-    isInterger,
-    isNotInterger,
+    isInteger,
+    isNotInteger,
     isCompleteDate,
     isNotCompleteDate,
     isUndefined,

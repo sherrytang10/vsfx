@@ -43,8 +43,8 @@ export class BaseService implements BaseServiceInterface {
      * @memberof ArticleInterface
      */
     async deletedAny(Model: any, id: number) {
-        let exe = await this.getRepository(Model).removeById(id);
-        return exe ? '删除成功' : '删除失败';
+        await this.getRepository(Model).removeById(id);
+        return '操作成功';
     }
 
 }
