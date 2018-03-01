@@ -71,8 +71,6 @@ var UsersController = /** @class */ (function () {
                         return [4 /*yield*/, usersService.getUsersLogin({ email: email })];
                     case 1:
                         users = _b.sent();
-                        console.log('####');
-                        console.log(users);
                         if (users.id) {
                             password = users.password;
                             password = _common_1.Crypto.aesDecryptPipe(password);

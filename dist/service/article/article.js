@@ -116,16 +116,34 @@ var ArticleService = /** @class */ (function (_super) {
      */
     ArticleService.prototype.getArticleInfoById = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var sql, result;
+            var query, article;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        sql = "select a.id, a.title,a.type,a.articleTypeId,ata.name articleTypeName,au.nickName,a.docreader,\n        a.labelIds,a.picture,a.praise,a.visitors, cast(a.content as char) content, date_format(a.publishDate, \"%Y-%m-%d %H:%I:%S\") publishDate\n        from article a, article_type ata, users au \n        where ata.id = a.articleTypeId and au.id = a.usersId";
-                        sql += ' and a.id = ' + id;
-                        return [4 /*yield*/, this.execute(sql)];
+                        query = this.getRepository(article_1.Article).createQueryBuilder("article")
+                            .leftJoinAndSelect('article.users', 'users')
+                            .leftJoinAndSelect('article.articleType', 'articleType')
+                            .select([
+                            'article.id id',
+                            'article.title title',
+                            'article.type type',
+                            'article.docreader docreader',
+                            'article.picture picture',
+                            'article.visitors visitors',
+                            'article.praise praise',
+                            'cast(article.content as char) content',
+                            'date_format(article.publishDate, "%Y-%m-%d %H:%I:%S") publishDate',
+                            'article.disabled disabled',
+                            'articleType.id articleTypeId',
+                            'articleType.name articleTypeName',
+                            'users.id usersId',
+                            'users.nickName nickName'
+                        ]);
+                        query = query.where('article.id=:id', { id: id });
+                        return [4 /*yield*/, query.getRawOne()];
                     case 1:
-                        result = _a.sent();
-                        return [2 /*return*/, result[0] || {}];
+                        article = _a.sent();
+                        return [2 /*return*/, article || {}];
                 }
             });
         });

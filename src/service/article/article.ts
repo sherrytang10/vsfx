@@ -56,13 +56,29 @@ export class ArticleService extends BaseService implements ArticleInterface {
      * @memberof ArticleInterface
      */
     async getArticleInfoById(id: number): Promise<Article> {
-        let sql = `select a.id, a.title,a.type,a.articleTypeId,ata.name articleTypeName,au.nickName,a.docreader,
-        a.labelIds,a.picture,a.praise,a.visitors, cast(a.content as char) content, date_format(a.publishDate, "%Y-%m-%d %H:%I:%S") publishDate
-        from article a, article_type ata, users au 
-        where ata.id = a.articleTypeId and au.id = a.usersId`;
-        sql += ' and a.id = ' + id;
-        let result = await this.execute(sql);
-        return result[0] || {};
+        let query = this.getRepository(Article).createQueryBuilder("article")
+            .leftJoinAndSelect('article.users', 'users')
+            .leftJoinAndSelect('article.articleType', 'articleType')
+            .select([
+                'article.id id',
+                'article.title title',
+                'article.type type',
+                'article.docreader docreader',
+                'article.picture picture',
+                'article.visitors visitors',
+                'article.praise praise',
+                'cast(article.content as char) content',
+                'date_format(article.publishDate, "%Y-%m-%d %H:%I:%S") publishDate',
+                'article.disabled disabled',
+                'articleType.id articleTypeId',
+                'articleType.name articleTypeName',
+                'users.id usersId',
+                'users.nickName nickName'
+            ]);
+        query = query.where('article.id=:id', { id });
+        let article: Article = await query.getRawOne();
+
+        return article || {};
     }
 
     /**

@@ -71,7 +71,7 @@ var UsersService = /** @class */ (function (_super) {
             var users;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getRepository(users_1.Users).query('select id, roleId,email, userName, nickName, password from users where id=' + id)];
+                    case 0: return [4 /*yield*/, this.getRepository(users_1.Users).query('select id, usersRoleId,email, nickName, motto from users where id=' + id)];
                     case 1:
                         users = _a.sent();
                         return [2 /*return*/, users[0] || {}];
