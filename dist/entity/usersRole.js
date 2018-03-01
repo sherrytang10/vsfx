@@ -7,24 +7,21 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
-var Test = /** @class */ (function () {
-    function Test() {
+var UsersRole = /** @class */ (function () {
+    function UsersRole() {
     }
     __decorate([
         typeorm_1.PrimaryGeneratedColumn()
-    ], Test.prototype, "id", void 0);
+    ], UsersRole.prototype, "id", void 0);
     __decorate([
-        typeorm_1.Column('enum', { enum: ['男', '女'] })
-    ], Test.prototype, "sex", void 0);
+        typeorm_1.Column('varchar', { length: 12 })
+    ], UsersRole.prototype, "name", void 0);
     __decorate([
-        typeorm_1.Column('timestamp', { comment: '修改时间' })
-    ], Test.prototype, "updateDate", void 0);
-    __decorate([
-        typeorm_1.Column('datetime', { comment: '创建时间时间' })
-    ], Test.prototype, "createDate", void 0);
-    Test = __decorate([
-        typeorm_1.Entity('test')
-    ], Test);
-    return Test;
+        typeorm_1.Column('int', { default: 1, comment: '1可用，0禁用' })
+    ], UsersRole.prototype, "disabled", void 0);
+    UsersRole = __decorate([
+        typeorm_1.Entity('users_role')
+    ], UsersRole);
+    return UsersRole;
 }());
-exports.Test = Test;
+exports.UsersRole = UsersRole;

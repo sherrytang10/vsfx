@@ -41,44 +41,87 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _common_1 = require("../@common");
-var test_1 = require("../entity/test");
-var TestService = /** @class */ (function () {
-    function TestService() {
+var _common_1 = require("../../../@common");
+var utils_1 = require("../../../@common/utils");
+var article_1 = require("../../../service/article/article");
+/**
+ * 文章controller
+ *
+ * @export
+ * @class ArticleController
+ */
+var articleService = new article_1.ArticleService();
+var ArticleController = /** @class */ (function () {
+    function ArticleController() {
     }
-    TestService.prototype.getOne = function () {
+    /**
+     * 获取文章列表
+     *
+     * @param {any} { query }
+     * @param {any} res
+     * @memberof ArticleController
+     */
+    ArticleController.prototype.findAllArticle = function (_a, res) {
+        var _b = _a.query, articleTypeId = _b.articleTypeId, type = _b.type;
         return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getRepository(test_1.Test).findOneById(1)];
-                    case 1: return [2 /*return*/, _a.sent()];
+            var _c, _d;
+            return __generator(this, function (_e) {
+                switch (_e.label) {
+                    case 0:
+                        if (articleTypeId && utils_1.isNotInteger(articleTypeId)) {
+                            return [2 /*return*/, res.sendError('分类id类型错误')];
+                        }
+                        if (type && utils_1.isNotInteger(type)) {
+                            return [2 /*return*/, res.sendError('type类型错误')];
+                        }
+                        // res.sendSuccess(await ArticleService.getAnyAll('article', { column: ['id'], where: { disabled: 1, id: 2 } }))
+                        _d = (_c = res).sendSuccess;
+                        return [4 /*yield*/, articleService.findAllArticle({ articleTypeId: articleTypeId, type: type })];
+                    case 1:
+                        // res.sendSuccess(await ArticleService.getAnyAll('article', { column: ['id'], where: { disabled: 1, id: 2 } }))
+                        _d.apply(_c, [_e.sent()]);
+                        return [2 /*return*/];
                 }
             });
         });
     };
-    TestService.prototype.update = function (id) {
+    /**
+     * 根据id获取一篇文章
+     *
+     * @param {any} { params }
+     * @param {any} res
+     * @memberof ArticleController
+     */
+    ArticleController.prototype.getArticleInfoById = function (_a, res) {
+        var id = _a.params.id;
         return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getRepository(test_1.Test).updateById(id, { sex: 2 })];
-                    case 1: return [2 /*return*/, _a.sent()];
+            var _b, _c;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
+                    case 0:
+                        if (!utils_1.isNotInteger(+id)) return [3 /*break*/, 1];
+                        res.sendError('入参类型错误');
+                        return [3 /*break*/, 3];
+                    case 1:
+                        _c = (_b = res).sendSuccess;
+                        return [4 /*yield*/, articleService.getArticleInfoById(id)];
+                    case 2:
+                        _c.apply(_b, [_d.sent()]);
+                        _d.label = 3;
+                    case 3: return [2 /*return*/];
                 }
             });
         });
     };
-    TestService.prototype.save = function (test) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getRepository(test_1.Test).save(test)];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    TestService = __decorate([
-        _common_1.Service()
-    ], TestService);
-    return TestService;
+    __decorate([
+        _common_1.Get('/findAll')
+    ], ArticleController.prototype, "findAllArticle", null);
+    __decorate([
+        _common_1.Get('/info/:id')
+    ], ArticleController.prototype, "getArticleInfoById", null);
+    ArticleController = __decorate([
+        _common_1.Controller('/article')
+    ], ArticleController);
+    return ArticleController;
 }());
-exports.TestService = TestService;
+exports.ArticleController = ArticleController;

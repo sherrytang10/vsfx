@@ -72,8 +72,32 @@ var ArticleService = /** @class */ (function (_super) {
             return __generator(this, function (_h) {
                 switch (_h.label) {
                     case 0:
-                        query = this.getRepository(article_1.Article).createQueryBuilder("article");
-                        return [4 /*yield*/, query.skip(currPage - 1).take(pageSize).getMany()];
+                        query = this.getRepository(article_1.Article).createQueryBuilder("article")
+                            .leftJoinAndSelect('article.users', 'users')
+                            .leftJoinAndSelect('article.articleType', 'articleType')
+                            .select([
+                            'date_format(article.publishDate, "%Y-%m-%d %H:%I:%S") publishDate',
+                            'article.title title',
+                            // 'article.labelIds labelIds',
+                            // 'date_format(a.createDate, "%Y-%m-%d %H:%I:%S") createDate',
+                            'article.docreader docreader',
+                            'article.id id',
+                            'article.visitors visitors',
+                            // 'cast(article.content as char) content',
+                            'article.praise praise',
+                            'article.picture picture',
+                            'articleType.id articleTypeId',
+                            'articleType.name articleTypeName',
+                            'article.disabled disabled',
+                            'article.type type',
+                            'users.id usersId',
+                            'users.nickName nickName'
+                        ]);
+                        query = query.where('1=1');
+                        if (type) {
+                            query = query.andWhere('type=:type', { type: type });
+                        }
+                        return [4 /*yield*/, query.skip(currPage - 1).take(pageSize).getRawMany()];
                     case 1:
                         articleList = _h.sent();
                         return [4 /*yield*/, this.getRepository(article_1.Article).count()];
@@ -96,12 +120,12 @@ var ArticleService = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        sql = "select a.id, a.title,a.type,a.articleTypeId,at.name articleTypeName,au.nickName,a.docreader,\n        a.labelIds,a.picture,a.praise,a.visitors, cast(a.content as char) content, date_format(a.publishTime, \"%Y-%m-%d %H:%I:%S\") publishTime\n        from article a, article_type at, users au \n        where at.id = a.articleTypeId and au.id = a.authorUserId";
+                        sql = "select a.id, a.title,a.type,a.articleTypeId,ata.name articleTypeName,au.nickName,a.docreader,\n        a.labelIds,a.picture,a.praise,a.visitors, cast(a.content as char) content, date_format(a.publishDate, \"%Y-%m-%d %H:%I:%S\") publishDate\n        from article a, article_type ata, users au \n        where ata.id = a.articleTypeId and au.id = a.usersId";
                         sql += ' and a.id = ' + id;
                         return [4 /*yield*/, this.execute(sql)];
                     case 1:
                         result = _a.sent();
-                        return [2 /*return*/, result[0]];
+                        return [2 /*return*/, result[0] || {}];
                 }
             });
         });

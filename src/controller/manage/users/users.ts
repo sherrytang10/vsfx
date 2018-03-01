@@ -2,6 +2,7 @@ import { Controller, Get, Post, /*Validation, */Crypto, isNotInteger, isEmpty, i
 import { UsersService } from '../../../service/users/users';
 import { ArticleService } from '../../../service/article/article';
 import { Users } from '../../../entity/users';
+import { UsersRole } from '../../../entity/usersRole';
 
 const usersService = new UsersService();
 const articleService = new ArticleService();
@@ -65,10 +66,12 @@ export class UsersController {
         }
         var users: Users = await usersService.getUsersExist({ phone, email });
         if (!users.id) {
+            var usersRole = <UsersRole>{};
             users.nickName = nickName || email;
             users.email = email;
             users.phone = phone;
-            users.roleId = 1;
+            usersRole.id = 1;
+            users.usersRole = usersRole;
             users.createDate = Format.date(new Date(), 'yyyy-MM-dd hh:mm:ss');
             users.password = Crypto.aesEncryptPipe(password);
             res.sendSuccess(await usersService.saveOrUpdateUser(users));
@@ -138,7 +141,14 @@ export class UsersController {
      * @memberof usersController
      */
     @Get('/delete/:id')
-    async deleteUserById({ params: { id } }, res) {
+    async deleteUserById({ params: { id }, session }, res) {
+        try {
+            if (session.users.UsersRole.id != 1) {
+                return res.sendError('没有权限', 997);
+            }
+        } catch (e) {
+            return res.sendError('没有权限', 997);
+        }
         if (isFalse(id)) {
             return res.sendError('id不能为空')
         }

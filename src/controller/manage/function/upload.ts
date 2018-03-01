@@ -2,7 +2,7 @@ import { Controller, Get, Post, doFormidable } from '../../../@common';
 import { PictureService } from '../../../service/function/picture';
 import { Picture } from '../../../entity/picture';
 const pictureService = new PictureService();
-@Controller('/picture')
+@Controller('/picture_library')
 export class PictureController {
     @Post('/upload')
     async uploadPicture(req, res) {

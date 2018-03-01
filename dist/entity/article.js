@@ -19,6 +19,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
 var BaseEntity_1 = require("./BaseEntity");
 var users_1 = require("./users");
+var articleType_1 = require("./articleType");
 var Article = /** @class */ (function (_super) {
     __extends(Article, _super);
     function Article() {
@@ -31,6 +32,10 @@ var Article = /** @class */ (function (_super) {
         typeorm_1.OneToOne(function (type) { return users_1.Users; }),
         typeorm_1.JoinColumn()
     ], Article.prototype, "users", void 0);
+    __decorate([
+        typeorm_1.OneToOne(function (type) { return articleType_1.ArticleType; }),
+        typeorm_1.JoinColumn()
+    ], Article.prototype, "articleType", void 0);
     __decorate([
         typeorm_1.Column('varchar', { length: 255, comment: '概要' })
     ], Article.prototype, "docreader", void 0);
@@ -47,13 +52,10 @@ var Article = /** @class */ (function (_super) {
         typeorm_1.Column('varchar', { length: 2555, comment: '标签', nullable: true })
     ], Article.prototype, "labelIds", void 0);
     __decorate([
-        typeorm_1.Column('int', { length: 11, comment: '分类' })
-    ], Article.prototype, "articleTypeId", void 0);
-    __decorate([
-        typeorm_1.Column('int', { length: 11, comment: '赞', nullable: true })
+        typeorm_1.Column('int', { length: 11, comment: '赞', nullable: true, default: 0 })
     ], Article.prototype, "praise", void 0);
     __decorate([
-        typeorm_1.Column('int', { length: 11, comment: '访问量', nullable: true })
+        typeorm_1.Column('int', { length: 11, comment: '访问量', nullable: true, default: 0 })
     ], Article.prototype, "visitors", void 0);
     __decorate([
         typeorm_1.Column('int', { length: 225, comment: '1 文章 2是短记', nullable: true })

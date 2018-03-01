@@ -18,6 +18,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
 var BaseEntity_1 = require("./BaseEntity");
+var usersRole_1 = require("./usersRole");
 var Users = /** @class */ (function (_super) {
     __extends(Users, _super);
     function Users() {
@@ -33,8 +34,9 @@ var Users = /** @class */ (function (_super) {
         typeorm_1.Column('varchar', { length: 200, comment: '密码' })
     ], Users.prototype, "password", void 0);
     __decorate([
-        typeorm_1.Column('int', { length: 11, comment: '角色' })
-    ], Users.prototype, "roleId", void 0);
+        typeorm_1.OneToOne(function (type) { return usersRole_1.UsersRole; }),
+        typeorm_1.JoinColumn()
+    ], Users.prototype, "usersRole", void 0);
     __decorate([
         typeorm_1.Column('varchar', { length: 20, comment: '用户昵称' })
     ], Users.prototype, "nickName", void 0);

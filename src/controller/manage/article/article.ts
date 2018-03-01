@@ -1,6 +1,8 @@
-import { Controller, Get, Post, isNotInteger, isEmpty, isFalse, Format } from '../../../@common';
+import { Controller, Get, Post } from '../../../@common';
+import { Only, isNotInteger, isEmpty, isFalse, Format } from '../../../@common/utils';
 import { ArticleService } from '../../../service/article/article';
 import { Article } from '../../../entity/article';
+import { ArticleType } from '../../../entity/articleType';
 import { Users } from '../../../entity/users';
 
 /**
@@ -57,20 +59,37 @@ export class ArticleController {
     @Post('/saveOrUpdate')
     // @Validation(ArticleCreateDto)
     async saveArticleInfo({ body, session }, res) {
-        var article: Article = body;
 
-        if (isEmpty(article.title) || (article.title.length > 50)) {
+        if (isEmpty(body.title) || (body.title.length > 50)) {
             return res.sendError('标题长度必须为1-50个字符');
         }
-        if (isEmpty(article.content)) {
+        if (isEmpty(body.content)) {
             return res.sendError('内容不能为空');
         }
-        if (isNotInteger(article.articleTypeId)) {
+        if (isNotInteger(body.articleTypeId)) {
             return res.sendError('articleTypeId类型异常');
         }
-        var users = new Users();
+        let users = <Users>{};
+        let article = <Article>{};
+        let articleType = <ArticleType>{};
+        articleType.id = body.articleTypeId;
         users.id = 1;//session.users.id;
         article.users = users;
+        article.articleType = articleType;
+        // id: 0,
+        //         title:'',
+        //         content: '',
+        //         picture: '',
+        //         docreader:'',
+        //         articleTypeId: '',
+        //         labelId:[],
+        //         publishDate: '',
+        //         type: '1', //文章或短记
+        if (body.id) {
+            article.id = body.id;
+        }
+        Object.assign(article, Only(body, ['title', 'content', 'pricture', 'docreader', 'labelId', 'publishDate', 'type']))
+
         if (article.type == 1) {
             if (isEmpty(article.picture)) {
                 // return res.sendError('题图不能为空');

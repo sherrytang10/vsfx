@@ -7,7 +7,7 @@ export interface ArticleTypeInterface {
      * @param {number} userId 
      * @memberof ArticleTypeInterface
      */
-    findAllGroupType(userId: number);
+    findAllGroupType(userId?: number);
     /**
      * 获取所有分类列表
      * 

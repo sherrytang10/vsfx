@@ -71,6 +71,8 @@ var UsersController = /** @class */ (function () {
                         return [4 /*yield*/, usersService.getUsersLogin({ email: email })];
                     case 1:
                         users = _b.sent();
+                        console.log('####');
+                        console.log(users);
                         if (users.id) {
                             password = users.password;
                             password = _common_1.Crypto.aesDecryptPipe(password);
@@ -119,7 +121,7 @@ var UsersController = /** @class */ (function () {
     UsersController.prototype.saveUsers = function (_a, res) {
         var body = _a.body;
         return __awaiter(this, void 0, void 0, function () {
-            var email, phone, password, nickName, users, _b, _c;
+            var email, phone, password, nickName, users, usersRole, _b, _c;
             return __generator(this, function (_d) {
                 switch (_d.label) {
                     case 0:
@@ -134,10 +136,12 @@ var UsersController = /** @class */ (function () {
                     case 1:
                         users = _d.sent();
                         if (!!users.id) return [3 /*break*/, 3];
+                        usersRole = {};
                         users.nickName = nickName || email;
                         users.email = email;
                         users.phone = phone;
-                        users.roleId = 1;
+                        usersRole.id = 1;
+                        users.usersRole = usersRole;
                         users.createDate = _common_1.Format.date(new Date(), 'yyyy-MM-dd hh:mm:ss');
                         users.password = _common_1.Crypto.aesEncryptPipe(password);
                         _c = (_b = res).sendSuccess;
@@ -249,12 +253,20 @@ var UsersController = /** @class */ (function () {
      * @memberof usersController
      */
     UsersController.prototype.deleteUserById = function (_a, res) {
-        var id = _a.params.id;
+        var id = _a.params.id, session = _a.session;
         return __awaiter(this, void 0, void 0, function () {
             var _b, _c;
             return __generator(this, function (_d) {
                 switch (_d.label) {
                     case 0:
+                        try {
+                            if (session.users.UsersRole.id != 1) {
+                                return [2 /*return*/, res.sendError('没有权限', 997)];
+                            }
+                        }
+                        catch (e) {
+                            return [2 /*return*/, res.sendError('没有权限', 997)];
+                        }
                         if (_common_1.isFalse(id)) {
                             return [2 /*return*/, res.sendError('id不能为空')];
                         }

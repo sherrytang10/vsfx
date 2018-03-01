@@ -41,77 +41,46 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _common_1 = require("../../@common");
-var test_1 = require("../../service/test");
-var test_2 = require("../../entity/test");
-var usersController = /** @class */ (function () {
-    function usersController() {
+var _common_1 = require("../../../@common");
+var articleType_1 = require("../../../service/article/articleType");
+/**
+ * 文章controller
+ *
+ * @export
+ * @class ArticleController
+ */
+var articleTypeService = new articleType_1.ArticleTypeService();
+var ArticleTypeController = /** @class */ (function () {
+    function ArticleTypeController() {
     }
-    usersController.prototype.findOneById = function (_a, res) {
-        var id = _a.params.id;
+    /**
+     * 获取文章类型列表+文章数量
+     *
+     * @param {any} { query }
+     * @param {any} res
+     * @memberof ArticleTypeController
+     */
+    ArticleTypeController.prototype.findAllGroupType = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var testService, _b, _c;
-            return __generator(this, function (_d) {
-                switch (_d.label) {
+            var _a, _b;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
                     case 0:
-                        testService = new test_1.TestService();
-                        _c = (_b = res).sendSuccess;
-                        return [4 /*yield*/, testService.getOne()];
+                        _b = (_a = res).sendSuccess;
+                        return [4 /*yield*/, articleTypeService.findAllGroupType()];
                     case 1:
-                        _c.apply(_b, [_d.sent()]);
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    usersController.prototype.update = function (_a, res) {
-        var id = _a.params.id;
-        return __awaiter(this, void 0, void 0, function () {
-            var testService, _b, _c;
-            return __generator(this, function (_d) {
-                switch (_d.label) {
-                    case 0:
-                        testService = new test_1.TestService();
-                        _c = (_b = res).sendSuccess;
-                        return [4 /*yield*/, testService.update(id)];
-                    case 1:
-                        _c.apply(_b, [_d.sent()]);
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    usersController.prototype.save = function (_a, res) {
-        var sex = _a.params.sex;
-        return __awaiter(this, void 0, void 0, function () {
-            var testService, test, _b, _c;
-            return __generator(this, function (_d) {
-                switch (_d.label) {
-                    case 0:
-                        testService = new test_1.TestService();
-                        test = new test_2.Test();
-                        test.sex = sex;
-                        _c = (_b = res).sendSuccess;
-                        return [4 /*yield*/, testService.save(test)];
-                    case 1:
-                        _c.apply(_b, [_d.sent()]);
+                        _b.apply(_a, [_c.sent()]);
                         return [2 /*return*/];
                 }
             });
         });
     };
     __decorate([
-        _common_1.Get('/one')
-    ], usersController.prototype, "findOneById", null);
-    __decorate([
-        _common_1.Get('/update/:id')
-    ], usersController.prototype, "update", null);
-    __decorate([
-        _common_1.Get('/save/:sex')
-    ], usersController.prototype, "save", null);
-    usersController = __decorate([
-        _common_1.Controller('/test')
-    ], usersController);
-    return usersController;
+        _common_1.Get('/findAllGroupType')
+    ], ArticleTypeController.prototype, "findAllGroupType", null);
+    ArticleTypeController = __decorate([
+        _common_1.Controller('/articletype')
+    ], ArticleTypeController);
+    return ArticleTypeController;
 }());
-exports.usersController = usersController;
+exports.ArticleTypeController = ArticleTypeController;

@@ -71,10 +71,10 @@ var UsersService = /** @class */ (function (_super) {
             var users;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getRepository(users_1.Users).findOneById(id)];
+                    case 0: return [4 /*yield*/, this.getRepository(users_1.Users).query('select id, roleId,email, userName, nickName, password from users where id=' + id)];
                     case 1:
                         users = _a.sent();
-                        return [2 /*return*/, users || {}];
+                        return [2 /*return*/, users[0] || {}];
                 }
             });
         });
@@ -89,15 +89,30 @@ var UsersService = /** @class */ (function (_super) {
     UsersService.prototype.getUsersLogin = function (_a) {
         var email = _a.email;
         return __awaiter(this, void 0, void 0, function () {
-            var sql, users;
+            var query, users;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        sql = "select * from users where disabled = 1 and  email = \"" + email + "\"";
-                        return [4 /*yield*/, this.execute(sql)];
+                        query = this.getRepository(users_1.Users).createQueryBuilder("users")
+                            .leftJoinAndSelect('users.usersRole', 'usersRole')
+                            .select([
+                            'users.id id',
+                            'users.nickName nickName',
+                            'users.userName userName',
+                            'users.password password',
+                            'users.email email',
+                            'users.phone phone',
+                            'users.motto metto',
+                            'usersRole.id roleId',
+                            'usersRole.name roleName'
+                        ]).where('1=1');
+                        if (email) {
+                            query = query.andWhere('email=:email', { email: email });
+                        }
+                        return [4 /*yield*/, query.printSql().getRawOne()];
                     case 1:
                         users = _b.sent();
-                        return [2 /*return*/, users[0] || {}];
+                        return [2 /*return*/, users || {}];
                 }
             });
         });
@@ -116,7 +131,7 @@ var UsersService = /** @class */ (function (_super) {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        sql = "select * from users where phone='" + phone + "' or email='" + email + "'";
+                        sql = "select id from users where phone='" + phone + "' or email='" + email + "'";
                         return [4 /*yield*/, this.execute(sql)];
                     case 1:
                         users = _b.sent();
@@ -132,16 +147,29 @@ var UsersService = /** @class */ (function (_super) {
      */
     UsersService.prototype.findAllUsers = function (disabled) {
         return __awaiter(this, void 0, void 0, function () {
-            var sql;
+            var query, usersList;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        sql = "select * from users where 1=1";
+                        query = this.getRepository(users_1.Users).createQueryBuilder("users")
+                            .leftJoinAndSelect('users.usersRole', 'usersRole')
+                            .select([
+                            'users.id id',
+                            'users.nickName nickName',
+                            'users.userName userName',
+                            'users.email email',
+                            'users.phone phone',
+                            'users.motto metto',
+                            'usersRole.id roleId',
+                            'usersRole.name roleName'
+                        ]).where('1=1');
                         if (disabled || disabled == 0) {
-                            sql += ' and disabled = ' + disabled;
+                            query = query.andWhere('disabled=:disabled', { disabled: disabled });
                         }
-                        return [4 /*yield*/, this.execute(sql)];
-                    case 1: return [2 /*return*/, _a.sent()];
+                        return [4 /*yield*/, query.skip(0).take(100).printSql().getRawMany()];
+                    case 1:
+                        usersList = _a.sent();
+                        return [2 /*return*/, usersList];
                 }
             });
         });

@@ -42,8 +42,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var _common_1 = require("../../../@common");
+var utils_1 = require("../../../@common/utils");
 var article_1 = require("../../../service/article/article");
-var users_1 = require("../../../entity/users");
 /**
  * 文章controller
  *
@@ -69,16 +69,16 @@ var ArticleController = /** @class */ (function () {
                 switch (_f.label) {
                     case 0:
                         articleTypeId = body.articleTypeId, type = body.type, desabled = body.desabled, nickName = body.nickName, _b = body.pageSize, pageSize = _b === void 0 ? 20 : _b, _c = body.currPage, currPage = _c === void 0 ? 1 : _c;
-                        if (articleTypeId && _common_1.isNotInteger(articleTypeId)) {
+                        if (articleTypeId && utils_1.isNotInteger(articleTypeId)) {
                             return [2 /*return*/, res.sendError('分类id类型错误')];
                         }
-                        if (type && _common_1.isNotInteger(type)) {
+                        if (type && utils_1.isNotInteger(type)) {
                             return [2 /*return*/, res.sendError('type类型错误')];
                         }
-                        if (articleTypeId && _common_1.isNotInteger(desabled)) {
+                        if (articleTypeId && utils_1.isNotInteger(desabled)) {
                             return [2 /*return*/, res.sendError('desabled类型错误')];
                         }
-                        if (_common_1.isNotInteger(pageSize) && _common_1.isNotInteger(currPage)) {
+                        if (utils_1.isNotInteger(pageSize) && utils_1.isNotInteger(currPage)) {
                             return [2 /*return*/, res.sendError('分页入参类型错误')];
                         }
                         // res.sendSuccess(await ArticleService.getAnyAll('article', { column: ['id'], where: { disabled: 1, id: 2 } }))
@@ -106,7 +106,7 @@ var ArticleController = /** @class */ (function () {
             return __generator(this, function (_d) {
                 switch (_d.label) {
                     case 0:
-                        if (!_common_1.isNotInteger(+id)) return [3 /*break*/, 1];
+                        if (!utils_1.isNotInteger(+id)) return [3 /*break*/, 1];
                         res.sendError('入参类型错误');
                         return [3 /*break*/, 3];
                     case 1:
@@ -123,29 +123,45 @@ var ArticleController = /** @class */ (function () {
     ArticleController.prototype.saveArticleInfo = function (_a, res) {
         var body = _a.body, session = _a.session;
         return __awaiter(this, void 0, void 0, function () {
-            var article, users, nowTime, _b, _c;
+            var users, article, articleType, nowTime, _b, _c;
             return __generator(this, function (_d) {
                 switch (_d.label) {
                     case 0:
-                        article = body;
-                        if (_common_1.isEmpty(article.title) || (article.title.length > 50)) {
+                        if (utils_1.isEmpty(body.title) || (body.title.length > 50)) {
                             return [2 /*return*/, res.sendError('标题长度必须为1-50个字符')];
                         }
-                        if (_common_1.isEmpty(article.content)) {
+                        if (utils_1.isEmpty(body.content)) {
                             return [2 /*return*/, res.sendError('内容不能为空')];
                         }
-                        if (_common_1.isNotInteger(article.articleTypeId)) {
+                        if (utils_1.isNotInteger(body.articleTypeId)) {
                             return [2 /*return*/, res.sendError('articleTypeId类型异常')];
                         }
-                        users = new users_1.Users();
+                        users = {};
+                        article = {};
+                        articleType = {};
+                        articleType.id = body.articleTypeId;
                         users.id = 1; //session.users.id;
                         article.users = users;
+                        article.articleType = articleType;
+                        // id: 0,
+                        //         title:'',
+                        //         content: '',
+                        //         picture: '',
+                        //         docreader:'',
+                        //         articleTypeId: '',
+                        //         labelId:[],
+                        //         publishDate: '',
+                        //         type: '1', //文章或短记
+                        if (body.id) {
+                            article.id = body.id;
+                        }
+                        Object.assign(article, utils_1.Only(body, ['title', 'content', 'pricture', 'docreader', 'labelId', 'publishDate', 'type']));
                         if (article.type == 1) {
-                            if (_common_1.isEmpty(article.picture)) {
+                            if (utils_1.isEmpty(article.picture)) {
                                 // return res.sendError('题图不能为空');
                             }
                         }
-                        nowTime = _common_1.Format.date(new Date(), 'yyyy-MM-dd hh:mm:ss');
+                        nowTime = utils_1.Format.date(new Date(), 'yyyy-MM-dd hh:mm:ss');
                         article.publishDate = nowTime;
                         if (!article.publishDate) {
                             article.publishDate = nowTime;
@@ -173,10 +189,10 @@ var ArticleController = /** @class */ (function () {
                 switch (_d.label) {
                     case 0:
                         id = query.id;
-                        if (_common_1.isNotInteger(id)) {
+                        if (utils_1.isNotInteger(id)) {
                             return [2 /*return*/, res.sendError('入参类型错误')];
                         }
-                        if (_common_1.isFalse(id)) {
+                        if (utils_1.isFalse(id)) {
                             return [2 /*return*/, res.sendError('id不能为空')];
                         }
                         _c = (_b = res).sendSuccess;
@@ -196,10 +212,10 @@ var ArticleController = /** @class */ (function () {
                 switch (_d.label) {
                     case 0:
                         id = query.id;
-                        if (_common_1.isNotInteger(id)) {
+                        if (utils_1.isNotInteger(id)) {
                             return [2 /*return*/, res.sendError('入参类型错误')];
                         }
-                        if (_common_1.isFalse(id)) {
+                        if (utils_1.isFalse(id)) {
                             return [2 /*return*/, res.sendError('id不能为空')];
                         }
                         _c = (_b = res).sendSuccess;
@@ -219,10 +235,10 @@ var ArticleController = /** @class */ (function () {
                 switch (_d.label) {
                     case 0:
                         id = query.id;
-                        if (_common_1.isNotInteger(id)) {
+                        if (utils_1.isNotInteger(id)) {
                             return [2 /*return*/, res.sendError('入参类型错误')];
                         }
-                        if (_common_1.isFalse(id)) {
+                        if (utils_1.isFalse(id)) {
                             return [2 /*return*/, res.sendError('id不能为空')];
                         }
                         _c = (_b = res).sendSuccess;

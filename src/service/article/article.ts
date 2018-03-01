@@ -3,6 +3,7 @@ import { Service } from '../../@common';
 import { BaseService } from '../BaseService';
 import { ArticleInterface, findAllArticleD } from './article.d';
 import { Article } from '../../entity/article';
+import { ArticleType } from 'entity/articleType';
 @Service()
 export class ArticleService extends BaseService implements ArticleInterface {
     execute;
@@ -17,8 +18,32 @@ export class ArticleService extends BaseService implements ArticleInterface {
     async findAllArticle({ articleTypeId = 0, type = 0, nickName = '', desabled = null, pageSize = 20, currPage = 1 }: findAllArticleD) {
         // let [articleList, [{ total }]] = await this.execute(`call getArticleList(${articleTypeId}, ${type}, ${desabled},${nickName || null},${currPage}, ${pageSize})`);
         // return { articleList, total }
-        let query = this.getRepository(Article).createQueryBuilder("article");
-        let articleList = await query.skip(currPage - 1).take(pageSize).getMany();
+        let query = this.getRepository(Article).createQueryBuilder("article")
+            .leftJoinAndSelect('article.users', 'users')
+            .leftJoinAndSelect('article.articleType', 'articleType')
+            .select([
+                'date_format(article.publishDate, "%Y-%m-%d %H:%I:%S") publishDate',
+                'article.title title',
+                // 'article.labelIds labelIds',
+                // 'date_format(a.createDate, "%Y-%m-%d %H:%I:%S") createDate',
+                'article.docreader docreader',
+                'article.id id',
+                'article.visitors visitors',
+                // 'cast(article.content as char) content',
+                'article.praise praise',
+                'article.picture picture',
+                'articleType.id articleTypeId',
+                'articleType.name articleTypeName',
+                'article.disabled disabled',
+                'article.type type',
+                'users.id usersId',
+                'users.nickName nickName'
+            ]);
+        query = query.where('1=1');
+        if (type) {
+            query = query.andWhere('type=:type', { type });
+        }
+        let articleList: Array<Article> = await query.skip(currPage - 1).take(pageSize)./*printSql().*/getRawMany();
 
         let total = await this.getRepository(Article).count();
         return { articleList, total };
@@ -31,13 +56,13 @@ export class ArticleService extends BaseService implements ArticleInterface {
      * @memberof ArticleInterface
      */
     async getArticleInfoById(id: number): Promise<Article> {
-        let sql = `select a.id, a.title,a.type,a.articleTypeId,at.name articleTypeName,au.nickName,a.docreader,
-        a.labelIds,a.picture,a.praise,a.visitors, cast(a.content as char) content, date_format(a.publishTime, "%Y-%m-%d %H:%I:%S") publishTime
-        from article a, article_type at, users au 
-        where at.id = a.articleTypeId and au.id = a.authorUserId`;
+        let sql = `select a.id, a.title,a.type,a.articleTypeId,ata.name articleTypeName,au.nickName,a.docreader,
+        a.labelIds,a.picture,a.praise,a.visitors, cast(a.content as char) content, date_format(a.publishDate, "%Y-%m-%d %H:%I:%S") publishDate
+        from article a, article_type ata, users au 
+        where ata.id = a.articleTypeId and au.id = a.usersId`;
         sql += ' and a.id = ' + id;
         let result = await this.execute(sql);
-        return result[0];
+        return result[0] || {};
     }
 
     /**

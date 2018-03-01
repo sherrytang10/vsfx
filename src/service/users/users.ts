@@ -2,6 +2,7 @@ import { Service } from '../../@common';
 import { BaseService } from '../BaseService';
 import { UsersInterface, UsersOption } from './users.d';
 import { Users } from '../../entity/users';
+import { UsersRole } from '../../entity/usersRole';
 @Service()
 export class UsersService extends BaseService implements UsersInterface {
     execute: any;
@@ -14,8 +15,9 @@ export class UsersService extends BaseService implements UsersInterface {
      * @memberof UsersService
      */
     async getUsersById(id: number): Promise<Users> {
-        let users: Users = await this.getRepository(Users).findOneById(id);
-        return users || {};
+        // let users: Users = await this.getRepository(Users).findOneById(id);
+        let users: Users = await this.getRepository(Users).query('select id, roleId,email, userName, nickName, password from users where id=' + id);
+        return users[0] || {};
     }
 
     /**
@@ -26,9 +28,29 @@ export class UsersService extends BaseService implements UsersInterface {
      * @memberof UsersService
      */
     async getUsersLogin({ email }: UsersOption): Promise<Users> {
-        let sql = `select * from users where disabled = 1 and  email = "${email}"`;
-        let users = await this.execute(sql);
-        return users[0] || {};
+        // let sql = `select * from users where disabled = 1 and  email = "${email}"`;
+        // let users = await this.execute(sql);
+        // return users[0] || {};
+        // let users: Users = await this.getRepository(Users).query(`select id, email, password,usersRoleId from users where email="${email}"`);
+
+        let query = this.getRepository(Users).createQueryBuilder("users")
+            .leftJoinAndSelect('users.usersRole', 'usersRole')
+            .select([
+                'users.id id',
+                'users.nickName nickName',
+                'users.userName userName',
+                'users.password password',
+                'users.email email',
+                'users.phone phone',
+                'users.motto metto',
+                'usersRole.id roleId',
+                'usersRole.name roleName'
+            ]).where('1=1');
+        if (email) {
+            query = query.andWhere('email=:email', { email });
+        }
+        let users: Users = await query.printSql().getOne();
+        return users || {};
     }
 
     /**
@@ -39,7 +61,7 @@ export class UsersService extends BaseService implements UsersInterface {
      * @memberof UsersService
      */
     async getUsersExist({ email, phone }: UsersOption): Promise<Users> {
-        let sql = `select * from users where phone='${phone}' or email='${email}'`;
+        let sql = `select id from users where phone='${phone}' or email='${email}'`;
         let users = await this.execute(sql);
         return users[0] || {};
     }
@@ -50,11 +72,30 @@ export class UsersService extends BaseService implements UsersInterface {
      * @memberof UsersService
      */
     async findAllUsers(disabled?: number): Promise<Array<Users>> {
-        let sql = `select * from users where 1=1`;
+        // let params = {};
+        // if (disabled || disabled == 0) {
+        //     params = { disabled };
+        // }
+        // let usersList: Array<Users> = await this.getRepository(Users).find(params);
+        // console.log(usersList)
+        // return usersList;
+        let query = this.getRepository(Users).createQueryBuilder("users")
+            .leftJoinAndSelect('users.usersRole', 'usersRole')
+            .select([
+                'users.id id',
+                'users.nickName nickName',
+                'users.userName userName',
+                'users.email email',
+                'users.phone phone',
+                'users.motto metto',
+                'usersRole.id roleId',
+                'usersRole.name roleName'
+            ]).where('1=1');
         if (disabled || disabled == 0) {
-            sql += ' and disabled = ' + disabled
+            query = query.andWhere('disabled=:disabled', { disabled });
         }
-        return await this.execute(sql);
+        let usersList: Array<Users> = await query.skip(0).take(100).printSql().getRawMany();
+        return usersList;
     }
 
     /**

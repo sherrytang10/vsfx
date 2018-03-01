@@ -53,7 +53,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var _common_1 = require("../../@common");
 var BaseService_1 = require("../BaseService");
-var articleType_1 = require("entity/articleType");
+var articleType_1 = require("../../entity/articleType");
 var ArticleTypeService = /** @class */ (function (_super) {
     __extends(ArticleTypeService, _super);
     function ArticleTypeService() {
@@ -69,7 +69,7 @@ var ArticleTypeService = /** @class */ (function (_super) {
         return __awaiter(this, void 0, void 0, function () {
             var query;
             return __generator(this, function (_a) {
-                query = "SELECT count(a.articleTypeId) as num, at.id as id, at.name classify \n        FROM article a LEFT JOIN article_type at ON at.id=a.articleTypeId \n        LEFT JOIN users au ON au.id=a.authorUserId \n        WHERE a.disabled=1";
+                query = "SELECT count(a.articleTypeId) as num, at.id as id, at.name classify \n        FROM article a LEFT JOIN article_type at ON at.id=a.articleTypeId \n        LEFT JOIN users au ON au.id=a.usersId \n        WHERE a.disabled=1";
                 if (userId) {
                     query += " and au.id=" + userId;
                 }

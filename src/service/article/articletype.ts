@@ -2,7 +2,7 @@
 import { Service, isInteger } from '../../@common';
 import { BaseService } from '../BaseService';
 import { ArticleTypeInterface } from './articleType.d';
-import { ArticleType } from 'entity/articleType';
+import { ArticleType } from '../../entity/articleType';
 @Service()
 export class ArticleTypeService extends BaseService implements ArticleTypeInterface {
     execute;
@@ -13,10 +13,10 @@ export class ArticleTypeService extends BaseService implements ArticleTypeInterf
      * @param {number} userId 
      * @memberof ArticleTypeInterface
      */
-    async findAllGroupType(userId: number) {
+    async findAllGroupType(userId?: number) {
         let query = `SELECT count(a.articleTypeId) as num, at.id as id, at.name classify 
         FROM article a LEFT JOIN article_type at ON at.id=a.articleTypeId 
-        LEFT JOIN users au ON au.id=a.authorUserId 
+        LEFT JOIN users au ON au.id=a.usersId 
         WHERE a.disabled=1`
         if (userId) {
             query += ` and au.id=` + userId;

@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn, OneToMany } from 'typeorm';
 import { BaseEntity } from './BaseEntity';
+import { UsersRole } from './usersRole';
 @Entity('users')
 export class Users extends BaseEntity {
     @Column('varchar', { length: 30, comment: '用户真实姓名', nullable: true })
@@ -11,8 +12,13 @@ export class Users extends BaseEntity {
     @Column('varchar', { length: 200, comment: '密码' })
     password: string;
 
-    @Column('int', { length: 11, comment: '角色' })
-    roleId: number;
+    // @Column('int', { length: 11, comment: '角色' })
+    // roleId: number;
+    // @OneToMany(type => UsersRole, userRole => userRole.users)
+    // usersRole: UsersRole;
+    @OneToOne(type => UsersRole)
+    @JoinColumn()
+    usersRole: UsersRole;
 
     @Column('varchar', { length: 20, comment: '用户昵称' })
     nickName: string;

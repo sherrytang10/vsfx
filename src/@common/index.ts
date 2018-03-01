@@ -12,10 +12,9 @@
 // __export(require('./decorator/entity.decorator'));
 // __export(require('./connect'));
 // __export(require('./crypto'));
-
 export * from './utils';
-export * from './decorator/controller.decorator';
 export * from './decorator/request.decorator';
+export * from './decorator/controller.decorator';
 export * from './decorator/service.decorator';
 // export * from './decorator/validation.decorator';
 // export * from './decorator/entity.decorator';
