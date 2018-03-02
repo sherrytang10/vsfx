@@ -1,4 +1,4 @@
-import { Controller, Get, Post } from '../../../@common';
+import { Controller, Get, Post, isInteger, isNotEmpty } from '../../../@common';
 import { Only, isNotInteger, isEmpty, isFalse, Format } from '../../../@common/utils';
 import { ArticleService } from '../../../service/article/article';
 import { Article } from '../../../entity/article';
@@ -59,7 +59,14 @@ export class ArticleController {
     @Post('/saveOrUpdate')
     // @Validation(ArticleCreateDto)
     async saveArticleInfo({ body, session }, res) {
-
+        let article = <Article>{};
+        if (isNotEmpty(body.id)) {
+            if (isInteger(body.id)) {
+                article.id = body.id;
+            } else {
+                return res.sendError('id入参类型异常');
+            }
+        }
         if (isEmpty(body.title) || (body.title.length > 50)) {
             return res.sendError('标题长度必须为1-50个字符');
         }
@@ -70,7 +77,6 @@ export class ArticleController {
             return res.sendError('articleTypeId类型异常');
         }
         let users = <Users>{};
-        let article = <Article>{};
         let articleType = <ArticleType>{};
         articleType.id = body.articleTypeId;
         users.id = 1;//session.users.id;
@@ -85,9 +91,7 @@ export class ArticleController {
         //         labelId:[],
         //         publishDate: '',
         //         type: '1', //文章或短记
-        if (body.id) {
-            article.id = body.id;
-        }
+
         Object.assign(article, Only(body, ['title', 'content', 'pricture', 'docreader', 'labelId', 'publishDate', 'type']))
 
         if (article.type == 1) {

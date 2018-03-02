@@ -123,10 +123,19 @@ var ArticleController = /** @class */ (function () {
     ArticleController.prototype.saveArticleInfo = function (_a, res) {
         var body = _a.body, session = _a.session;
         return __awaiter(this, void 0, void 0, function () {
-            var users, article, articleType, nowTime, _b, _c;
+            var article, users, articleType, nowTime, _b, _c;
             return __generator(this, function (_d) {
                 switch (_d.label) {
                     case 0:
+                        article = {};
+                        if (_common_1.isNotEmpty(body.id)) {
+                            if (_common_1.isInteger(body.id)) {
+                                article.id = body.id;
+                            }
+                            else {
+                                return [2 /*return*/, res.sendError('id入参类型异常')];
+                            }
+                        }
                         if (utils_1.isEmpty(body.title) || (body.title.length > 50)) {
                             return [2 /*return*/, res.sendError('标题长度必须为1-50个字符')];
                         }
@@ -137,7 +146,6 @@ var ArticleController = /** @class */ (function () {
                             return [2 /*return*/, res.sendError('articleTypeId类型异常')];
                         }
                         users = {};
-                        article = {};
                         articleType = {};
                         articleType.id = body.articleTypeId;
                         users.id = 1; //session.users.id;
@@ -152,9 +160,6 @@ var ArticleController = /** @class */ (function () {
                         //         labelId:[],
                         //         publishDate: '',
                         //         type: '1', //文章或短记
-                        if (body.id) {
-                            article.id = body.id;
-                        }
                         Object.assign(article, utils_1.Only(body, ['title', 'content', 'pricture', 'docreader', 'labelId', 'publishDate', 'type']));
                         if (article.type == 1) {
                             if (utils_1.isEmpty(article.picture)) {

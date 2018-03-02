@@ -71,12 +71,84 @@ var ArticleTypeController = /** @class */ (function () {
                         if (_common_1.isNotInteger(desabled)) {
                             return [2 /*return*/, res.sendError('入参类型异常')];
                         }
-                        // res.sendSuccess(await ArticleService.getAnyAll('article', { column: ['id'], where: { disabled: 1, id: 2 } }))
                         _d = (_c = res).sendSuccess;
                         return [4 /*yield*/, articleTypeService.findAll(desabled)];
                     case 1:
-                        // res.sendSuccess(await ArticleService.getAnyAll('article', { column: ['id'], where: { disabled: 1, id: 2 } }))
                         _d.apply(_c, [_e.sent()]);
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    ArticleTypeController.prototype.saveArticleInfo = function (_a, res) {
+        var body = _a.body, session = _a.session;
+        return __awaiter(this, void 0, void 0, function () {
+            var articleType, _b, _c;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
+                    case 0:
+                        articleType = {};
+                        if (_common_1.isNotEmpty(body.id)) {
+                            if (_common_1.isInteger(body.id)) {
+                                articleType.id = body.id;
+                            }
+                            else {
+                                return [2 /*return*/, res.sendError('id入参类型异常')];
+                            }
+                        }
+                        if (_common_1.isEmpty(body.name) || (body.name.length > 25)) {
+                            return [2 /*return*/, res.sendError('标题长度必须为1-25个字符')];
+                        }
+                        articleType.name = body.name;
+                        _c = (_b = res).sendSuccess;
+                        return [4 /*yield*/, articleTypeService.saveOrUpdateArticleType(articleType)];
+                    case 1:
+                        _c.apply(_b, [_d.sent()]);
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    // @Get('/pulish')
+    // async pulishArticle({ query }, res) {
+    //     let { id } = query;
+    //     if (isNotInteger(id)) {
+    //         return res.sendError('入参类型错误');
+    //     }
+    //     if (isFalse(id)) {
+    //         return res.sendError('id不能为空');
+    //     }
+    //     res.sendSuccess(await articleService.publishArticle(id));
+    // }
+    // @Get('/disabled')
+    // async disabledArticle({ query }, res) {
+    //     let { id } = query;
+    //     if (isNotInteger(id)) {
+    //         return res.sendError('入参类型错误');
+    //     }
+    //     if (isFalse(id)) {
+    //         return res.sendError('id不能为空');
+    //     }
+    //     res.sendSuccess(await articleService.disabledArticle(id));
+    // }
+    ArticleTypeController.prototype.deleteArticle = function (_a, res) {
+        var query = _a.query;
+        return __awaiter(this, void 0, void 0, function () {
+            var id, _b, _c;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
+                    case 0:
+                        id = query.id;
+                        if (_common_1.isNotInteger(id)) {
+                            return [2 /*return*/, res.sendError('入参类型错误')];
+                        }
+                        if (_common_1.isFalse(id)) {
+                            return [2 /*return*/, res.sendError('id不能为空')];
+                        }
+                        _c = (_b = res).sendSuccess;
+                        return [4 /*yield*/, articleTypeService.deletedArticleType(id)];
+                    case 1:
+                        _c.apply(_b, [_d.sent()]);
                         return [2 /*return*/];
                 }
             });
@@ -85,6 +157,13 @@ var ArticleTypeController = /** @class */ (function () {
     __decorate([
         _common_1.Get('/findAll')
     ], ArticleTypeController.prototype, "findAllArticleType", null);
+    __decorate([
+        _common_1.Post('/saveOrUpdate')
+        // @Validation(ArticleCreateDto)
+    ], ArticleTypeController.prototype, "saveArticleInfo", null);
+    __decorate([
+        _common_1.Get('/delete')
+    ], ArticleTypeController.prototype, "deleteArticle", null);
     ArticleTypeController = __decorate([
         _common_1.Controller('/articletype')
     ], ArticleTypeController);
