@@ -29,7 +29,7 @@ export class ArticleTypeController {
 
     @Post('/saveOrUpdate')
     // @Validation(ArticleCreateDto)
-    async saveArticleInfo({ body, session }, res) {
+    async saveArticleTypeInfo({ body, session }, res) {
         var articleType = <ArticleType>{};
         if (isNotEmpty(body.id)) {
             if (isInteger(body.id)) {
@@ -46,7 +46,7 @@ export class ArticleTypeController {
     }
 
     // @Get('/pulish')
-    // async pulishArticle({ query }, res) {
+    // async pulishArticleType({ query }, res) {
     //     let { id } = query;
     //     if (isNotInteger(id)) {
     //         return res.sendError('入参类型错误');
@@ -57,7 +57,7 @@ export class ArticleTypeController {
     //     res.sendSuccess(await articleService.publishArticle(id));
     // }
     // @Get('/disabled')
-    // async disabledArticle({ query }, res) {
+    // async disabledArticleType({ query }, res) {
     //     let { id } = query;
     //     if (isNotInteger(id)) {
     //         return res.sendError('入参类型错误');
@@ -68,7 +68,7 @@ export class ArticleTypeController {
     //     res.sendSuccess(await articleService.disabledArticle(id));
     // }
     @Get('/delete')
-    async deleteArticle({ query }, res) {
+    async deleteArticleType({ query }, res) {
         let { id } = query;
         if (isNotInteger(id)) {
             return res.sendError('入参类型错误');

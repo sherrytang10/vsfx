@@ -42,25 +42,25 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var _common_1 = require("../../../@common");
-var articleType_1 = require("../../../service/article/articleType");
+var usersRole_1 = require("../../../service/users/usersRole");
 /**
  * 文章controller
  *
  * @export
  * @class ArticleController
  */
-var articleTypeService = new articleType_1.ArticleTypeService();
-var ArticleTypeController = /** @class */ (function () {
-    function ArticleTypeController() {
+var usersRoleService = new usersRole_1.UsersRoleService();
+var UsersRoleController = /** @class */ (function () {
+    function UsersRoleController() {
     }
     /**
      * 获取文章类型列表
      *
      * @param {any} { query }
      * @param {any} res
-     * @memberof ArticleTypeController
+     * @memberof UsersRoleController
      */
-    ArticleTypeController.prototype.findAllArticleType = function (_a, res) {
+    UsersRoleController.prototype.findAllUsersRole = function (_a, res) {
         var body = _a.body;
         return __awaiter(this, void 0, void 0, function () {
             var _b, desabled, _c, _d;
@@ -72,7 +72,7 @@ var ArticleTypeController = /** @class */ (function () {
                             return [2 /*return*/, res.sendError('入参类型异常')];
                         }
                         _d = (_c = res).sendSuccess;
-                        return [4 /*yield*/, articleTypeService.findAll(desabled)];
+                        return [4 /*yield*/, usersRoleService.findAllUsersRole(desabled)];
                     case 1:
                         _d.apply(_c, [_e.sent()]);
                         return [2 /*return*/];
@@ -80,17 +80,17 @@ var ArticleTypeController = /** @class */ (function () {
             });
         });
     };
-    ArticleTypeController.prototype.saveArticleTypeInfo = function (_a, res) {
+    UsersRoleController.prototype.saveUsersRoleInfo = function (_a, res) {
         var body = _a.body, session = _a.session;
         return __awaiter(this, void 0, void 0, function () {
-            var articleType, _b, _c;
+            var usersRole, _b, _c;
             return __generator(this, function (_d) {
                 switch (_d.label) {
                     case 0:
-                        articleType = {};
+                        usersRole = {};
                         if (_common_1.isNotEmpty(body.id)) {
                             if (_common_1.isInteger(body.id)) {
-                                articleType.id = body.id;
+                                usersRole.id = body.id;
                             }
                             else {
                                 return [2 /*return*/, res.sendError('id入参类型异常')];
@@ -99,9 +99,9 @@ var ArticleTypeController = /** @class */ (function () {
                         if (_common_1.isEmpty(body.name) || (body.name.length > 25)) {
                             return [2 /*return*/, res.sendError('标题长度必须为1-25个字符')];
                         }
-                        articleType.name = body.name;
+                        usersRole.name = body.name;
                         _c = (_b = res).sendSuccess;
-                        return [4 /*yield*/, articleTypeService.saveOrUpdateArticleType(articleType)];
+                        return [4 /*yield*/, usersRoleService.saveOrUpdateUsersRole(usersRole)];
                     case 1:
                         _c.apply(_b, [_d.sent()]);
                         return [2 /*return*/];
@@ -109,29 +109,7 @@ var ArticleTypeController = /** @class */ (function () {
             });
         });
     };
-    // @Get('/pulish')
-    // async pulishArticleType({ query }, res) {
-    //     let { id } = query;
-    //     if (isNotInteger(id)) {
-    //         return res.sendError('入参类型错误');
-    //     }
-    //     if (isFalse(id)) {
-    //         return res.sendError('id不能为空');
-    //     }
-    //     res.sendSuccess(await articleService.publishArticle(id));
-    // }
-    // @Get('/disabled')
-    // async disabledArticleType({ query }, res) {
-    //     let { id } = query;
-    //     if (isNotInteger(id)) {
-    //         return res.sendError('入参类型错误');
-    //     }
-    //     if (isFalse(id)) {
-    //         return res.sendError('id不能为空');
-    //     }
-    //     res.sendSuccess(await articleService.disabledArticle(id));
-    // }
-    ArticleTypeController.prototype.deleteArticleType = function (_a, res) {
+    UsersRoleController.prototype.deleteUsersRole = function (_a, res) {
         var query = _a.query;
         return __awaiter(this, void 0, void 0, function () {
             var id, _b, _c;
@@ -146,7 +124,7 @@ var ArticleTypeController = /** @class */ (function () {
                             return [2 /*return*/, res.sendError('id不能为空')];
                         }
                         _c = (_b = res).sendSuccess;
-                        return [4 /*yield*/, articleTypeService.deletedArticleType(id)];
+                        return [4 /*yield*/, usersRoleService.deletedUsersRole(id)];
                     case 1:
                         _c.apply(_b, [_d.sent()]);
                         return [2 /*return*/];
@@ -156,17 +134,17 @@ var ArticleTypeController = /** @class */ (function () {
     };
     __decorate([
         _common_1.Get('/findAll')
-    ], ArticleTypeController.prototype, "findAllArticleType", null);
+    ], UsersRoleController.prototype, "findAllUsersRole", null);
     __decorate([
         _common_1.Post('/saveOrUpdate')
         // @Validation(ArticleCreateDto)
-    ], ArticleTypeController.prototype, "saveArticleTypeInfo", null);
+    ], UsersRoleController.prototype, "saveUsersRoleInfo", null);
     __decorate([
         _common_1.Get('/delete')
-    ], ArticleTypeController.prototype, "deleteArticleType", null);
-    ArticleTypeController = __decorate([
-        _common_1.Controller('/articletype')
-    ], ArticleTypeController);
-    return ArticleTypeController;
+    ], UsersRoleController.prototype, "deleteUsersRole", null);
+    UsersRoleController = __decorate([
+        _common_1.Controller('/usersrole')
+    ], UsersRoleController);
+    return UsersRoleController;
 }());
-exports.ArticleTypeController = ArticleTypeController;
+exports.UsersRoleController = UsersRoleController;
