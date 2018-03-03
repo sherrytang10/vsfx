@@ -11,7 +11,7 @@ import { ArticleTypeService } from '../../../service/article/articleType';
 @Controller('/articletype')
 export class ArticleTypeController {
     @Get('/findAllGroupType')
-    async findAllGroupType() {
-        return await ArticleTypeService.findAllGroupType();
+    async findAllGroupType(req, res) {
+        res.sendSuccess(await ArticleTypeService.findAllGroupType());
     }
 }

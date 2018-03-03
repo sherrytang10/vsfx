@@ -12,6 +12,17 @@ import { ArticleTypeService } from '../../../service/article/articleType';
 export class ArticleTypeController {
     @Get('/findAllGroupType')
     async findAllGroupType() {
-        return await ArticleTypeService.findAllGroupType();
+        return {
+            status: 1,
+            results: await ArticleTypeService.findAllGroupType()
+        };
+    }
+
+    @Get('/findAll')
+    async findAllArticleType() {
+        return {
+            status: 1,
+            results: await ArticleTypeService.findAll({ disabled: 1 })
+        };
     }
 }
