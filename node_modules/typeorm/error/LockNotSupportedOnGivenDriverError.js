@@ -19,7 +19,7 @@ var LockNotSupportedOnGivenDriverError = /** @class */ (function (_super) {
         var _this = _super.call(this) || this;
         _this.name = "LockNotSupportedOnGivenDriverError";
         Object.setPrototypeOf(_this, LockNotSupportedOnGivenDriverError.prototype);
-        _this.message = "Locking not supported on giver driver.";
+        _this.message = "Locking not supported on given driver.";
         return _this;
     }
     return LockNotSupportedOnGivenDriverError;

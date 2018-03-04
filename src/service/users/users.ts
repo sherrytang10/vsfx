@@ -15,9 +15,24 @@ export class UsersService extends BaseService implements UsersInterface {
      * @memberof UsersService
      */
     async getUsersById(id: number): Promise<Users> {
-        // let users: Users = await this.getRepository(Users).findOneById(id);
-        let users: Users = await this.getRepository(Users).query('select id, usersRoleId,email, nickName, motto from users where id=' + id);
-        return users[0] || {};
+        
+        let query = this.getRepository(Users).createQueryBuilder("users")
+            .leftJoinAndSelect('users.usersRole', 'usersRole')
+            .select([
+                'users.id id',
+                'users.nickName nickName',
+                'users.userName userName',
+                'users.password password',
+                'users.email email',
+                'users.phone phone',
+                'users.motto metto',
+                'usersRole.id roleId',
+                'usersRole.name roleName'
+            ]).where('id=:id', {id});
+        let users = await query.printSql().getRawOne();
+        return users || {};
+        // let users: Users = await this.getRepository(Users).query('select id, usersRoleId,email, nickName, motto from users where id=' + id);
+        // return users[0] || {};
     }
 
     /**

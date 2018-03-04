@@ -68,13 +68,27 @@ var UsersService = /** @class */ (function (_super) {
      */
     UsersService.prototype.getUsersById = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var users;
+            var query, users;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getRepository(users_1.Users).query('select id, usersRoleId,email, nickName, motto from users where id=' + id)];
+                    case 0:
+                        query = this.getRepository(users_1.Users).createQueryBuilder("users")
+                            .leftJoinAndSelect('users.usersRole', 'usersRole')
+                            .select([
+                            'users.id id',
+                            'users.nickName nickName',
+                            'users.userName userName',
+                            'users.password password',
+                            'users.email email',
+                            'users.phone phone',
+                            'users.motto metto',
+                            'usersRole.id roleId',
+                            'usersRole.name roleName'
+                        ]).where('id=:id', { id: id });
+                        return [4 /*yield*/, query.printSql().getRawOne()];
                     case 1:
                         users = _a.sent();
-                        return [2 /*return*/, users[0] || {}];
+                        return [2 /*return*/, users || {}];
                 }
             });
         });

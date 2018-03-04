@@ -109,6 +109,24 @@ var UsersController = /** @class */ (function () {
             });
         });
     };
+    UsersController.prototype.getOneById = function (_a, res) {
+        var query = _a.query;
+        return __awaiter(this, void 0, void 0, function () {
+            var id, _b, _c;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
+                    case 0:
+                        id = query.id;
+                        if (_common_1.isNotInteger(id)) {
+                            return [2 /*return*/, res.sendError('入参格式不正确')];
+                        }
+                        _c = (_b = res).sendSuccess;
+                        return [4 /*yield*/, usersService.getUsersById(id)];
+                    case 1: return [2 /*return*/, _c.apply(_b, [_d.sent()])];
+                }
+            });
+        });
+    };
     /**
      * 保存用户
      *
@@ -289,6 +307,9 @@ var UsersController = /** @class */ (function () {
     __decorate([
         _common_1.Get('/findAll')
     ], UsersController.prototype, "findAllUsers", null);
+    __decorate([
+        _common_1.Get('/getOneById')
+    ], UsersController.prototype, "getOneById", null);
     __decorate([
         _common_1.Post('/save')
         // @Validation(UsersCreateDto)

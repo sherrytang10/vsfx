@@ -47,6 +47,15 @@ export class UsersController {
         res.sendSuccess(await usersService.findAllUsers());
     }
 
+
+    @Get('/getOneById')
+    async getOneById({query},res) {
+        let {id} = query;
+        if(isNotInteger(id)){
+            return res.sendError('入参格式不正确');
+        }
+        return res.sendSuccess(await usersService.getUsersById(id));
+    }
     /**
      * 保存用户
      * 
@@ -84,7 +93,6 @@ export class UsersController {
             res.sendError('未知异常');
         }
     }
-
     /**
      * 修改用户
      * 

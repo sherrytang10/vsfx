@@ -7,7 +7,7 @@ export declare class EntityMetadataValidator {
     /**
      * Validates all given entity metadatas.
      */
-    validateMany(entityMetadatas: EntityMetadata[], driver: Driver): Promise<void>;
+    validateMany(entityMetadatas: EntityMetadata[], driver: Driver): void;
     /**
      * Validates given entity metadata.
      */
