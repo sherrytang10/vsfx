@@ -74,9 +74,10 @@ export class TestfindDto {
 
 
 ### 四、下一步打算干哈呢？
-1. `当然是完善验证的修饰器‘品种’啦~`
-2. `完善service和实现简单的orm`
-3. `没想到- -`
-4. `coding...`
+1. `coding...`
 
 [源码github](https://github.com/qualc/vsfx)
+
+
+var buf = crypto.randomBytes(5);
+    name = buf.toString('hex');

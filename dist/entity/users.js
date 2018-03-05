@@ -61,6 +61,9 @@ var Users = /** @class */ (function (_super) {
     __decorate([
         typeorm_1.Column('varchar', { length: 225, comment: '简书主页', nullable: true })
     ], Users.prototype, "jianshu", void 0);
+    __decorate([
+        typeorm_1.Column('varchar', { length: 50, comment: '身份标识', nullable: true })
+    ], Users.prototype, "identity", void 0);
     Users = __decorate([
         typeorm_1.Entity('users')
     ], Users);

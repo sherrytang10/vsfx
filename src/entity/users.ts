@@ -12,10 +12,6 @@ export class Users extends BaseEntity {
     @Column('varchar', { length: 200, comment: '密码' })
     password: string;
 
-    // @Column('int', { length: 11, comment: '角色' })
-    // roleId: number;
-    // @OneToMany(type => UsersRole, userRole => userRole.users)
-    // usersRole: UsersRole;
     @OneToOne(type => UsersRole)
     @JoinColumn()
     usersRole: UsersRole;
@@ -43,4 +39,7 @@ export class Users extends BaseEntity {
 
     @Column('varchar', { length: 225, comment: '简书主页', nullable: true })
     jianshu: string;
+
+    @Column('varchar', { length: 50, comment: '身份标识', nullable: true })
+    identity: string;
 }

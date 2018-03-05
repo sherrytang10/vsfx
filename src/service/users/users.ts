@@ -15,7 +15,7 @@ export class UsersService extends BaseService implements UsersInterface {
      * @memberof UsersService
      */
     async getUsersById(id: number): Promise<Users> {
-        
+
         let query = this.getRepository(Users).createQueryBuilder("users")
             .leftJoinAndSelect('users.usersRole', 'usersRole')
             .select([
@@ -28,7 +28,7 @@ export class UsersService extends BaseService implements UsersInterface {
                 'users.motto metto',
                 'usersRole.id roleId',
                 'usersRole.name roleName'
-            ]).where('id=:id', {id});
+            ]).where('users.id=:id', { id });
         let users = await query.printSql().getRawOne();
         return users || {};
         // let users: Users = await this.getRepository(Users).query('select id, usersRoleId,email, nickName, motto from users where id=' + id);
@@ -75,10 +75,10 @@ export class UsersService extends BaseService implements UsersInterface {
      * @returns 
      * @memberof UsersService
      */
-    async getUsersExist({ email, phone }: UsersOption): Promise<Users> {
-        let sql = `select id from users where phone='${phone}' or email='${email}'`;
+    async getUsersExist({ email, phone }: UsersOption): Promise<Array<Users>> {
+        let sql = `select * from users where phone='${phone}' or email='${email}'`;
         let users = await this.execute(sql);
-        return users[0] || {};
+        return users || [];
     }
 
     /**
@@ -87,13 +87,6 @@ export class UsersService extends BaseService implements UsersInterface {
      * @memberof UsersService
      */
     async findAllUsers(disabled?: number): Promise<Array<Users>> {
-        // let params = {};
-        // if (disabled || disabled == 0) {
-        //     params = { disabled };
-        // }
-        // let usersList: Array<Users> = await this.getRepository(Users).find(params);
-        // console.log(usersList)
-        // return usersList;
         let query = this.getRepository(Users).createQueryBuilder("users")
             .leftJoinAndSelect('users.usersRole', 'usersRole')
             .select([

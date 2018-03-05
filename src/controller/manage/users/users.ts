@@ -1,4 +1,6 @@
-import { Controller, Get, Post, /*Validation, */Crypto, isNotInteger, isEmpty, isFalse, Format } from '../../../@common';
+import { Controller, Get, Post, Crypto, isNotEmpty } from '../../../@common';
+import { isNotInteger, isEmpty, isFalse, Format, isArray, isEmail, isPhone } from '../../../@common/utils';
+// import { randomBytes } from 'crypto';
 import { UsersService } from '../../../service/users/users';
 import { ArticleService } from '../../../service/article/article';
 import { Users } from '../../../entity/users';
@@ -17,7 +19,7 @@ export class UsersController {
      * @memberof usersController
      */
     @Post('/login')
-    async findOneById(req, res) {
+    async login(req, res) {
         var { email, password: upass } = req.body;
         if (isEmpty(email)) {
             return res.sendError('邮箱地址不能为空')
@@ -49,12 +51,14 @@ export class UsersController {
 
 
     @Get('/getOneById')
-    async getOneById({query},res) {
-        let {id} = query;
-        if(isNotInteger(id)){
+    async getOneById({ query }, res) {
+        let { id } = query;
+        if (isNotInteger(id)) {
             return res.sendError('入参格式不正确');
         }
-        return res.sendSuccess(await usersService.getUsersById(id));
+        let users: Users = await usersService.getUsersById(id);
+        users.password = Crypto.aesDecryptPipe(users.password);
+        return res.sendSuccess(users);
     }
     /**
      * 保存用户
@@ -66,33 +70,76 @@ export class UsersController {
     @Post('/save')
     // @Validation(UsersCreateDto)
     async saveUsers({ body }, res) {
-        var { email, phone, password, nickName } = body;
+        var { id = 0, email, phone = '', userName = '', password, nickName, roleId } = body;
         if (isEmpty(email)) {
             return res.sendError('邮箱不能为空');
+        }
+        if (!isEmail(email)) {
+            return res.sendError('邮箱格式不正确');
+        }
+        if (isEmpty(nickName)) {
+            return res.sendError('昵称不能为空');
+        }
+        if (!/^[a-zA-Z\.\s\u4e00-\u9fa5]{2,20}$/.test(nickName)) {
+            return res.sendError('用户昵称为长度 2 到 8 个中文字符或者 2 到 20 个英文字符');
         }
         if (isEmpty(password)) {
             return res.sendError('密码不能为空');
         }
-        var users: Users = await usersService.getUsersExist({ phone, email });
-        if (!users.id) {
+        if (!/^[\w\.\s\!\@\#\$\%\^\.\,\/\?\>\<\(\)\-\_\=\+\`\~]{6,26}$/.test(password)) {
+            return res.sendError('密码必须为长度6 到 26 个字符');
+        }
+        if (isNotInteger(roleId)) {
+            return res.sendError('请选择正确的用户组');
+        }
+        if (isNotEmpty(userName) && !/^([\u4e00-\u9fa5][a-zA-Z\.\s]{2,20})$/.test(userName)) {
+            return res.sendError('用户名为长度 2 到 8 个中文字符或者 2 到 20 个英文字符');
+        }
+        if (isNotEmpty(phone) && !/^1\d{10}$/.test(phone)) {
+            return res.sendError('请填写11位长度的手机号码');
+        }
+        let usersList: Array<Users> = await usersService.getUsersExist({ phone, email });
+
+        let operUsers = <Users>{};
+        if (id) {
+            operUsers = await usersService.getUsersById(id);
+        }
+        let checkUser = usersList.some((item: Users) => {
+            if (email && item.email == email) {
+                if (operUsers.email && operUsers.email != email) {
+                    return res.sendError('邮箱已存在');
+                }
+            } else if (phone && item.phone == phone && phone != operUsers.phone) {
+                if (operUsers.phone && operUsers.phone != phone) {
+                    return res.sendError('联系方式已存在');
+                }
+            } else {
+                if (!operUsers.id) {
+                    return res.sendError('未知异常');
+                }
+            }
+            return true;
+        });
+        if (operUsers) {
+            let users = <Users>{};
             var usersRole = <UsersRole>{};
             users.nickName = nickName || email;
             users.email = email;
             users.phone = phone;
-            usersRole.id = 1;
+            users.userName = userName;
+            usersRole.id = roleId;
             users.usersRole = usersRole;
             users.createDate = Format.date(new Date(), 'yyyy-MM-dd hh:mm:ss');
             users.password = Crypto.aesEncryptPipe(password);
+            // users.identity = randomBytes(15).toString('hex');
+            users.identity = (new Buffer(email)).toString('base64');
+            if (id) {
+                users.id = id;
+            }
             res.sendSuccess(await usersService.saveOrUpdateUser(users));
         }
-        else if (users.email == email) {
-            res.sendError('邮箱已存在');
-        } else if (users.phone == phone) {
-            res.sendError('联系方式已存在');
-        } else {
-            res.sendError('未知异常');
-        }
     }
+
     /**
      * 修改用户
      * 

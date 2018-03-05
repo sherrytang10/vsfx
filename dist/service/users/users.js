@@ -84,7 +84,7 @@ var UsersService = /** @class */ (function (_super) {
                             'users.motto metto',
                             'usersRole.id roleId',
                             'usersRole.name roleName'
-                        ]).where('id=:id', { id: id });
+                        ]).where('users.id=:id', { id: id });
                         return [4 /*yield*/, query.printSql().getRawOne()];
                     case 1:
                         users = _a.sent();
@@ -145,11 +145,11 @@ var UsersService = /** @class */ (function (_super) {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        sql = "select id from users where phone='" + phone + "' or email='" + email + "'";
+                        sql = "select * from users where phone='" + phone + "' or email='" + email + "'";
                         return [4 /*yield*/, this.execute(sql)];
                     case 1:
                         users = _b.sent();
-                        return [2 /*return*/, users[0] || {}];
+                        return [2 /*return*/, users || []];
                 }
             });
         });

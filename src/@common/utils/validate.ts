@@ -55,6 +55,12 @@ export const isBoolean = (obj: any) => {
 export const isFunction = (obj: any) => {
     return typeof obj == 'function';
 }
+export const isArray = (variable: Array<any> | any) => {
+    return Array.isArray(variable);
+}
+export const isNotArray = (variable: Array<any> | any) => {
+    return !Array.isArray(variable);
+}
 export default {
     isInteger,
     isNotInteger,
@@ -73,5 +79,7 @@ export default {
     isObject,
     isString,
     isBoolean,
-    isFunction
+    isFunction,
+    isArray,
+    isNotArray
 }

@@ -5,4 +5,4 @@ require('babel-core/register')({
     ]
 });
 require('./bin/app');
-// require('./test/app');
+// require('./test/app'); 

@@ -20,7 +20,7 @@ export class Article extends BaseEntity {
     @Column('varchar', { length: 255, comment: '概要' })
     docreader: string;
 
-    @Column('datetime', { comment: '角色' })
+    @Column('datetime', { comment: '发布时间' })
     publishDate: Date;
 
     @Column('varchar', { length: 255, comment: '文图', nullable: true })

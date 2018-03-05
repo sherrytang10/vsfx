@@ -42,6 +42,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var _common_1 = require("../../../@common");
+var utils_1 = require("../../../@common/utils");
+// import { randomBytes } from 'crypto';
 var users_1 = require("../../../service/users/users");
 var article_1 = require("../../../service/article/article");
 var users_2 = require("../../../entity/users");
@@ -58,14 +60,14 @@ var UsersController = /** @class */ (function () {
      * @returns
      * @memberof usersController
      */
-    UsersController.prototype.findOneById = function (req, res) {
+    UsersController.prototype.login = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
             var _a, email, upass, users, password;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         _a = req.body, email = _a.email, upass = _a.password;
-                        if (_common_1.isEmpty(email)) {
+                        if (utils_1.isEmpty(email)) {
                             return [2 /*return*/, res.sendError('邮箱地址不能为空')];
                         }
                         return [4 /*yield*/, usersService.getUsersLogin({ email: email })];
@@ -112,17 +114,19 @@ var UsersController = /** @class */ (function () {
     UsersController.prototype.getOneById = function (_a, res) {
         var query = _a.query;
         return __awaiter(this, void 0, void 0, function () {
-            var id, _b, _c;
-            return __generator(this, function (_d) {
-                switch (_d.label) {
+            var id, users;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         id = query.id;
-                        if (_common_1.isNotInteger(id)) {
+                        if (utils_1.isNotInteger(id)) {
                             return [2 /*return*/, res.sendError('入参格式不正确')];
                         }
-                        _c = (_b = res).sendSuccess;
                         return [4 /*yield*/, usersService.getUsersById(id)];
-                    case 1: return [2 /*return*/, _c.apply(_b, [_d.sent()])];
+                    case 1:
+                        users = _b.sent();
+                        users.password = _common_1.Crypto.aesDecryptPipe(users.password);
+                        return [2 /*return*/, res.sendSuccess(users)];
                 }
             });
         });
@@ -137,46 +141,88 @@ var UsersController = /** @class */ (function () {
     UsersController.prototype.saveUsers = function (_a, res) {
         var body = _a.body;
         return __awaiter(this, void 0, void 0, function () {
-            var email, phone, password, nickName, users, usersRole, _b, _c;
-            return __generator(this, function (_d) {
-                switch (_d.label) {
+            var _b, id, email, _c, phone, _d, userName, password, nickName, roleId, usersList, operUsers, checkUser, users, usersRole, _e, _f;
+            return __generator(this, function (_g) {
+                switch (_g.label) {
                     case 0:
-                        email = body.email, phone = body.phone, password = body.password, nickName = body.nickName;
-                        if (_common_1.isEmpty(email)) {
+                        _b = body.id, id = _b === void 0 ? 0 : _b, email = body.email, _c = body.phone, phone = _c === void 0 ? '' : _c, _d = body.userName, userName = _d === void 0 ? '' : _d, password = body.password, nickName = body.nickName, roleId = body.roleId;
+                        if (utils_1.isEmpty(email)) {
                             return [2 /*return*/, res.sendError('邮箱不能为空')];
                         }
-                        if (_common_1.isEmpty(password)) {
+                        if (!utils_1.isEmail(email)) {
+                            return [2 /*return*/, res.sendError('邮箱格式不正确')];
+                        }
+                        if (utils_1.isEmpty(nickName)) {
+                            return [2 /*return*/, res.sendError('昵称不能为空')];
+                        }
+                        if (!/^[a-zA-Z\.\s\u4e00-\u9fa5]{2,20}$/.test(nickName)) {
+                            return [2 /*return*/, res.sendError('用户昵称为长度 2 到 8 个中文字符或者 2 到 20 个英文字符')];
+                        }
+                        if (utils_1.isEmpty(password)) {
                             return [2 /*return*/, res.sendError('密码不能为空')];
+                        }
+                        if (!/^[\w\.\s\!\@\#\$\%\^\.\,\/\?\>\<\(\)\-\_\=\+\`\~]{6,26}$/.test(password)) {
+                            return [2 /*return*/, res.sendError('密码必须为长度6 到 26 个字符')];
+                        }
+                        if (utils_1.isNotInteger(roleId)) {
+                            return [2 /*return*/, res.sendError('请选择正确的用户组')];
+                        }
+                        if (_common_1.isNotEmpty(userName) && !/^([\u4e00-\u9fa5][a-zA-Z\.\s]{2,20})$/.test(userName)) {
+                            return [2 /*return*/, res.sendError('用户名为长度 2 到 8 个中文字符或者 2 到 20 个英文字符')];
+                        }
+                        if (_common_1.isNotEmpty(phone) && !/^1\d{10}$/.test(phone)) {
+                            return [2 /*return*/, res.sendError('请填写11位长度的手机号码')];
                         }
                         return [4 /*yield*/, usersService.getUsersExist({ phone: phone, email: email })];
                     case 1:
-                        users = _d.sent();
-                        if (!!users.id) return [3 /*break*/, 3];
+                        usersList = _g.sent();
+                        operUsers = {};
+                        if (!id) return [3 /*break*/, 3];
+                        return [4 /*yield*/, usersService.getUsersById(id)];
+                    case 2:
+                        operUsers = _g.sent();
+                        _g.label = 3;
+                    case 3:
+                        checkUser = usersList.some(function (item) {
+                            if (email && item.email == email) {
+                                if (operUsers.email && operUsers.email != email) {
+                                    return res.sendError('邮箱已存在');
+                                }
+                            }
+                            else if (phone && item.phone == phone && phone != operUsers.phone) {
+                                if (operUsers.phone && operUsers.phone != phone) {
+                                    return res.sendError('联系方式已存在');
+                                }
+                            }
+                            else {
+                                if (!operUsers.id) {
+                                    return res.sendError('未知异常');
+                                }
+                            }
+                            return true;
+                        });
+                        if (!operUsers) return [3 /*break*/, 5];
+                        users = {};
                         usersRole = {};
                         users.nickName = nickName || email;
                         users.email = email;
                         users.phone = phone;
-                        usersRole.id = 1;
+                        users.userName = userName;
+                        usersRole.id = roleId;
                         users.usersRole = usersRole;
-                        users.createDate = _common_1.Format.date(new Date(), 'yyyy-MM-dd hh:mm:ss');
+                        users.createDate = utils_1.Format.date(new Date(), 'yyyy-MM-dd hh:mm:ss');
                         users.password = _common_1.Crypto.aesEncryptPipe(password);
-                        _c = (_b = res).sendSuccess;
+                        // users.identity = randomBytes(15).toString('hex');
+                        users.identity = (new Buffer(email)).toString('base64');
+                        if (id) {
+                            users.id = id;
+                        }
+                        _f = (_e = res).sendSuccess;
                         return [4 /*yield*/, usersService.saveOrUpdateUser(users)];
-                    case 2:
-                        _c.apply(_b, [_d.sent()]);
-                        return [3 /*break*/, 4];
-                    case 3:
-                        if (users.email == email) {
-                            res.sendError('邮箱已存在');
-                        }
-                        else if (users.phone == phone) {
-                            res.sendError('联系方式已存在');
-                        }
-                        else {
-                            res.sendError('未知异常');
-                        }
-                        _d.label = 4;
-                    case 4: return [2 /*return*/];
+                    case 4:
+                        _f.apply(_e, [_g.sent()]);
+                        _g.label = 5;
+                    case 5: return [2 /*return*/];
                 }
             });
         });
@@ -218,10 +264,10 @@ var UsersController = /** @class */ (function () {
             return __generator(this, function (_d) {
                 switch (_d.label) {
                     case 0:
-                        if (_common_1.isFalse(id)) {
+                        if (utils_1.isFalse(id)) {
                             return [2 /*return*/, res.sendError('id不能为空')];
                         }
-                        if (_common_1.isNotInteger(+id)) {
+                        if (utils_1.isNotInteger(+id)) {
                             return [2 /*return*/, res.sendError('入参类型错误')];
                         }
                         _c = (_b = res).sendSuccess;
@@ -245,10 +291,10 @@ var UsersController = /** @class */ (function () {
             return __generator(this, function (_d) {
                 switch (_d.label) {
                     case 0:
-                        if (_common_1.isFalse(id)) {
+                        if (utils_1.isFalse(id)) {
                             return [2 /*return*/, res.sendError('id不能为空')];
                         }
-                        if (_common_1.isNotInteger(+id)) {
+                        if (utils_1.isNotInteger(+id)) {
                             return [2 /*return*/, res.sendError('入参类型错误')];
                         }
                         _c = (_b = res).sendSuccess;
@@ -283,10 +329,10 @@ var UsersController = /** @class */ (function () {
                         catch (e) {
                             return [2 /*return*/, res.sendError('没有权限', 997)];
                         }
-                        if (_common_1.isFalse(id)) {
+                        if (utils_1.isFalse(id)) {
                             return [2 /*return*/, res.sendError('id不能为空')];
                         }
-                        if (_common_1.isNotInteger(+id)) {
+                        if (utils_1.isNotInteger(+id)) {
                             return [2 /*return*/, res.sendError('入参类型错误')];
                         }
                         return [4 /*yield*/, articleService.deletedArticlesByUsersId(id)];
@@ -303,7 +349,7 @@ var UsersController = /** @class */ (function () {
     };
     __decorate([
         _common_1.Post('/login')
-    ], UsersController.prototype, "findOneById", null);
+    ], UsersController.prototype, "login", null);
     __decorate([
         _common_1.Get('/findAll')
     ], UsersController.prototype, "findAllUsers", null);

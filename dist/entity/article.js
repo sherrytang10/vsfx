@@ -40,7 +40,7 @@ var Article = /** @class */ (function (_super) {
         typeorm_1.Column('varchar', { length: 255, comment: '概要' })
     ], Article.prototype, "docreader", void 0);
     __decorate([
-        typeorm_1.Column('datetime', { comment: '角色' })
+        typeorm_1.Column('datetime', { comment: '发布时间' })
     ], Article.prototype, "publishDate", void 0);
     __decorate([
         typeorm_1.Column('varchar', { length: 255, comment: '文图', nullable: true })

@@ -57,6 +57,12 @@ exports.isBoolean = function (obj) {
 exports.isFunction = function (obj) {
     return typeof obj == 'function';
 };
+exports.isArray = function (variable) {
+    return Array.isArray(variable);
+};
+exports.isNotArray = function (variable) {
+    return !Array.isArray(variable);
+};
 exports.default = {
     isInteger: exports.isInteger,
     isNotInteger: exports.isNotInteger,
@@ -75,5 +81,7 @@ exports.default = {
     isObject: exports.isObject,
     isString: exports.isString,
     isBoolean: exports.isBoolean,
-    isFunction: exports.isFunction
+    isFunction: exports.isFunction,
+    isArray: exports.isArray,
+    isNotArray: exports.isNotArray
 };
