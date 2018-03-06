@@ -3,6 +3,7 @@ import { Article } from '../../entity/article';
 export interface findAllArticleD {
     articleTypeId?: number;
     type?: number;
+    identity?:string;
     nickName?: string;
     desabled?: null;
     pageSize?: number;
@@ -16,7 +17,7 @@ export interface ArticleInterface {
      * @param {Article} article 
      * @memberof ArticleInterface
      */
-    findAllArticle(article: Article);
+    findAllArticle(article: findAllArticleD);
 
     /**
      * 获取文章详情

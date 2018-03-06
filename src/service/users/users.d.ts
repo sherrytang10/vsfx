@@ -35,6 +35,20 @@ export interface UsersInterface {
     findAllUsers(disabled?: number);
 
     /**
+     *  查询所有用户|笔者
+     * 
+     * @memberOf UsersInterface
+     */
+    getAuthorList();
+    /**
+     * 根据identity查询作者信息
+     * 
+     * @param {string} identity 
+     * 
+     * @memberOf UsersInterface
+     */
+    getUsersByIdentity(identity: string);
+    /**
      * 添加或修改用户
      * 
      * @param {Users} users 

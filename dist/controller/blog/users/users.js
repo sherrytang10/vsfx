@@ -44,20 +44,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var _common_1 = require("../../../@common");
 var _common_2 = require("../../../@common");
 var users_1 = require("../../../service/users/users");
+var usersService = new users_1.UsersService();
 var UsersController = /** @class */ (function () {
     function UsersController() {
     }
     UsersController.prototype.findOneById = function (_a, res) {
         var id = _a.params.id;
         return __awaiter(this, void 0, void 0, function () {
-            var usersService, _b, _c;
+            var _b, _c;
             return __generator(this, function (_d) {
                 switch (_d.label) {
                     case 0:
                         if (_common_2.isNotInteger(+id)) {
                             return [2 /*return*/, res.sendError('入参类型错误')];
                         }
-                        usersService = new users_1.UsersService();
                         _c = (_b = res).sendSuccess;
                         return [4 /*yield*/, usersService.getUsersById(id)];
                     case 1:
@@ -67,15 +67,55 @@ var UsersController = /** @class */ (function () {
             });
         });
     };
-    UsersController.prototype.test = function (req, res, next) {
-        console.log('~~~~~~');
+    UsersController.prototype.findOneByIdentity = function (_a, res) {
+        var identity = _a.params.identity;
+        return __awaiter(this, void 0, void 0, function () {
+            var users;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        if (_common_2.isEmpty(identity)) {
+                            return [2 /*return*/, res.sendError('作者标识不能为空')];
+                        }
+                        return [4 /*yield*/, usersService.getUsersByIdentity(identity)];
+                    case 1: return [4 /*yield*/, _b.sent()];
+                    case 2:
+                        users = _b.sent();
+                        if (users.id) {
+                            res.sendSuccess(users);
+                        }
+                        else {
+                            res.sendError('无效的作者标识');
+                        }
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    UsersController.prototype.getAuthorList = function (req, res, next) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, _b;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        _b = (_a = res).sendSuccess;
+                        return [4 /*yield*/, usersService.getAuthorList()];
+                    case 1:
+                        _b.apply(_a, [_c.sent()]);
+                        return [2 /*return*/];
+                }
+            });
+        });
     };
     __decorate([
         _common_1.Get('/findOne/:id')
     ], UsersController.prototype, "findOneById", null);
     __decorate([
-        _common_1.Get('/test')
-    ], UsersController.prototype, "test", null);
+        _common_1.Get('/findOneByIdentity/:identity')
+    ], UsersController.prototype, "findOneByIdentity", null);
+    __decorate([
+        _common_1.Get('/findAuthorList')
+    ], UsersController.prototype, "getAuthorList", null);
     UsersController = __decorate([
         _common_1.Controller('/users')
     ], UsersController);

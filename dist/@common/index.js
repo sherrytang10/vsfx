@@ -22,4 +22,4 @@ __export(require("./decorator/request.decorator"));
 __export(require("./decorator/controller.decorator"));
 __export(require("./decorator/service.decorator"));
 // export * from './decorator/validation.decorator';
-// export * from './decorator/entity.decorator'; 
+// export * from './decorator/entity.decorator';

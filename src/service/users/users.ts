@@ -3,6 +3,7 @@ import { BaseService } from '../BaseService';
 import { UsersInterface, UsersOption } from './users.d';
 import { Users } from '../../entity/users';
 import { UsersRole } from '../../entity/usersRole';
+import { execute } from '../../@common/db/database_mysql';
 @Service()
 export class UsersService extends BaseService implements UsersInterface {
     execute: any;
@@ -105,7 +106,26 @@ export class UsersService extends BaseService implements UsersInterface {
         let usersList: Array<Users> = await query.skip(0).take(100).printSql().getRawMany();
         return usersList;
     }
-
+    async getAuthorList() :Promise<Array<Users>>{
+        let usersList: Array<Users> = await this.getRepository(Users).query("select count(u.id) count, u.identity, u.nickName, u.motto from users u, article at where u.disabled = 1 and `at`.disabled = 1 and u.id = `at`.usersId group by u.id");
+        return usersList;
+    }
+    async getUsersByIdentity(identity: string): Promise<Users>{
+        let users:Users = await this.getRepository(Users).createQueryBuilder("users")
+        .leftJoinAndSelect('users.usersRole', 'usersRole')
+        .select([
+            'users.id id',
+            'users.nickName nickName',
+            'users.userName userName',
+            'users.password password',
+            'users.email email',
+            'users.phone phone',
+            'users.motto metto',
+            'usersRole.id roleId',
+            'usersRole.name roleName'
+        ]).where('users.identity=:identity', { identity }).getRawOne();
+        return users || {};
+    }
     /**
      * 添加或修改用户
      * 

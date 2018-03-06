@@ -66,11 +66,11 @@ var ArticleService = /** @class */ (function (_super) {
      * @memberof ArticleInterface
      */
     ArticleService.prototype.findAllArticle = function (_a) {
-        var _b = _a.articleTypeId, articleTypeId = _b === void 0 ? 0 : _b, _c = _a.type, type = _c === void 0 ? 0 : _c, _d = _a.nickName, nickName = _d === void 0 ? '' : _d, _e = _a.desabled, desabled = _e === void 0 ? null : _e, _f = _a.pageSize, pageSize = _f === void 0 ? 20 : _f, _g = _a.currPage, currPage = _g === void 0 ? 1 : _g;
+        var _b = _a.articleTypeId, articleTypeId = _b === void 0 ? 0 : _b, _c = _a.type, type = _c === void 0 ? 0 : _c, _d = _a.identity, identity = _d === void 0 ? '' : _d, _e = _a.nickName, nickName = _e === void 0 ? '' : _e, _f = _a.desabled, desabled = _f === void 0 ? null : _f, _g = _a.pageSize, pageSize = _g === void 0 ? 20 : _g, _h = _a.currPage, currPage = _h === void 0 ? 1 : _h;
         return __awaiter(this, void 0, void 0, function () {
             var query, articleList, total;
-            return __generator(this, function (_h) {
-                switch (_h.label) {
+            return __generator(this, function (_j) {
+                switch (_j.label) {
                     case 0:
                         query = this.getRepository(article_1.Article).createQueryBuilder("article")
                             .leftJoinAndSelect('article.users', 'users')
@@ -95,14 +95,17 @@ var ArticleService = /** @class */ (function (_super) {
                         ]);
                         query = query.where('1=1');
                         if (type) {
-                            query = query.andWhere('type=:type', { type: type });
+                            query = query.andWhere('article.type=:type', { type: type });
+                        }
+                        if (identity) {
+                            query = query.andWhere('users.identity=:identity', { identity: identity });
                         }
                         return [4 /*yield*/, query.skip(currPage - 1).take(pageSize).getRawMany()];
                     case 1:
-                        articleList = _h.sent();
+                        articleList = _j.sent();
                         return [4 /*yield*/, this.getRepository(article_1.Article).count()];
                     case 2:
-                        total = _h.sent();
+                        total = _j.sent();
                         return [2 /*return*/, { articleList: articleList, total: total }];
                 }
             });
@@ -116,11 +119,10 @@ var ArticleService = /** @class */ (function (_super) {
      */
     ArticleService.prototype.getArticleInfoById = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var query, article;
+            var article;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        query = this.getRepository(article_1.Article).createQueryBuilder("article")
+                    case 0: return [4 /*yield*/, this.getRepository(article_1.Article).createQueryBuilder("article")
                             .leftJoinAndSelect('article.users', 'users')
                             .leftJoinAndSelect('article.articleType', 'articleType')
                             .select([
@@ -138,11 +140,10 @@ var ArticleService = /** @class */ (function (_super) {
                             'articleType.name articleTypeName',
                             'users.id usersId',
                             'users.nickName nickName'
-                        ]);
-                        query = query.where('article.id=:id', { id: id });
-                        return [4 /*yield*/, query.getRawOne()];
+                        ]).where('article.id=:id', { id: id }).getRawOne()];
                     case 1:
                         article = _a.sent();
+                        this.getRepository(article_1.Article).updateById(id, { visitors: ++article.visitors });
                         return [2 /*return*/, article || {}];
                 }
             });

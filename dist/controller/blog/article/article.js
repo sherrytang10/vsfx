@@ -62,7 +62,7 @@ var ArticleController = /** @class */ (function () {
      * @memberof ArticleController
      */
     ArticleController.prototype.findAllArticle = function (_a, res) {
-        var _b = _a.query, articleTypeId = _b.articleTypeId, type = _b.type;
+        var _b = _a.query, articleTypeId = _b.articleTypeId, type = _b.type, identity = _b.identity;
         return __awaiter(this, void 0, void 0, function () {
             var _c, _d;
             return __generator(this, function (_e) {
@@ -74,11 +74,9 @@ var ArticleController = /** @class */ (function () {
                         if (type && utils_1.isNotInteger(type)) {
                             return [2 /*return*/, res.sendError('type类型错误')];
                         }
-                        // res.sendSuccess(await ArticleService.getAnyAll('article', { column: ['id'], where: { disabled: 1, id: 2 } }))
                         _d = (_c = res).sendSuccess;
-                        return [4 /*yield*/, articleService.findAllArticle({ articleTypeId: articleTypeId, type: type })];
+                        return [4 /*yield*/, articleService.findAllArticle({ articleTypeId: articleTypeId, type: type, identity: identity })];
                     case 1:
-                        // res.sendSuccess(await ArticleService.getAnyAll('article', { column: ['id'], where: { disabled: 1, id: 2 } }))
                         _d.apply(_c, [_e.sent()]);
                         return [2 /*return*/];
                 }

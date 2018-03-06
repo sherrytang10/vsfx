@@ -65,13 +65,13 @@ var ArticleTypeService = /** @class */ (function (_super) {
      * @param {number} userId
      * @memberof ArticleTypeInterface
      */
-    ArticleTypeService.prototype.findAllGroupType = function (userId) {
+    ArticleTypeService.prototype.findAllGroupType = function (identity) {
         return __awaiter(this, void 0, void 0, function () {
             var query;
             return __generator(this, function (_a) {
                 query = "SELECT count(a.articleTypeId) as num, at.id as id, at.name classify \n        FROM article a LEFT JOIN article_type at ON at.id=a.articleTypeId \n        LEFT JOIN users au ON au.id=a.usersId \n        WHERE a.disabled=1";
-                if (userId) {
-                    query += " and au.id=" + userId;
+                if (identity) {
+                    query += " and au.identity='" + identity + "'";
                 }
                 query += ' GROUP BY a.articleTypeId';
                 return [2 /*return*/, this.execute(query)];

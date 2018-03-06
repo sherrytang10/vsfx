@@ -13,13 +13,13 @@ export class ArticleTypeService extends BaseService implements ArticleTypeInterf
      * @param {number} userId 
      * @memberof ArticleTypeInterface
      */
-    async findAllGroupType(userId?: number) {
+    async findAllGroupType(identity?: string) {
         let query = `SELECT count(a.articleTypeId) as num, at.id as id, at.name classify 
         FROM article a LEFT JOIN article_type at ON at.id=a.articleTypeId 
         LEFT JOIN users au ON au.id=a.usersId 
         WHERE a.disabled=1`
-        if (userId) {
-            query += ` and au.id=` + userId;
+        if (identity) {
+            query += ` and au.identity='${identity}'`;
         }
         query += ' GROUP BY a.articleTypeId';
         return this.execute(query);

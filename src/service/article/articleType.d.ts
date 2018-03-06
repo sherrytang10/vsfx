@@ -4,10 +4,10 @@ export interface ArticleTypeInterface {
     /**
      * 根据用户查询文章分类和分类总数
      * 
-     * @param {number} userId 
+     * @param {number} identity 
      * @memberof ArticleTypeInterface
      */
-    findAllGroupType(userId?: number);
+    findAllGroupType(identity?: string);
     /**
      * 获取所有分类列表
      * 

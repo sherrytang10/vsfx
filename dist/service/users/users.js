@@ -188,6 +188,44 @@ var UsersService = /** @class */ (function (_super) {
             });
         });
     };
+    UsersService.prototype.getAuthorList = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var usersList;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getRepository(users_1.Users).query("select count(u.id) count, u.identity, u.nickName, u.motto from users u, article at where u.disabled = 1 and u.id = `at`.usersId group by u.id")];
+                    case 1:
+                        usersList = _a.sent();
+                        return [2 /*return*/, usersList];
+                }
+            });
+        });
+    };
+    UsersService.prototype.getUsersByIdentity = function (identity) {
+        return __awaiter(this, void 0, void 0, function () {
+            var users;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getRepository(users_1.Users).createQueryBuilder("users")
+                            .leftJoinAndSelect('users.usersRole', 'usersRole')
+                            .select([
+                            'users.id id',
+                            'users.nickName nickName',
+                            'users.userName userName',
+                            'users.password password',
+                            'users.email email',
+                            'users.phone phone',
+                            'users.motto metto',
+                            'usersRole.id roleId',
+                            'usersRole.name roleName'
+                        ]).where('users.identity=:identity', { identity: identity }).getRawOne()];
+                    case 1:
+                        users = _a.sent();
+                        return [2 /*return*/, users || {}];
+                }
+            });
+        });
+    };
     /**
      * 添加或修改用户
      *

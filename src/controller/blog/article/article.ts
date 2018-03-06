@@ -22,15 +22,14 @@ export class ArticleController {
      * @memberof ArticleController
      */
     @Get('/findAll')
-    async findAllArticle({ query: { articleTypeId, type } }, res) {
+    async findAllArticle({ query: { articleTypeId, type, identity } }, res) {
         if (articleTypeId && isNotInteger(articleTypeId)) {
             return res.sendError('分类id类型错误');
         }
         if (type && isNotInteger(type)) {
             return res.sendError('type类型错误');
         }
-        // res.sendSuccess(await ArticleService.getAnyAll('article', { column: ['id'], where: { disabled: 1, id: 2 } }))
-        res.sendSuccess(await articleService.findAllArticle({ articleTypeId, type }));
+        res.sendSuccess(await articleService.findAllArticle({ articleTypeId, type,identity }));
     }
 
 

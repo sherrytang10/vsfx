@@ -15,7 +15,7 @@ export class ArticleService extends BaseService implements ArticleInterface {
      * @param {Article} article 
      * @memberof ArticleInterface
      */
-    async findAllArticle({ articleTypeId = 0, type = 0, nickName = '', desabled = null, pageSize = 20, currPage = 1 }: findAllArticleD) {
+    async findAllArticle({ articleTypeId = 0, type = 0,identity='', nickName = '', desabled = null, pageSize = 20, currPage = 1 }: findAllArticleD) {
         // let [articleList, [{ total }]] = await this.execute(`call getArticleList(${articleTypeId}, ${type}, ${desabled},${nickName || null},${currPage}, ${pageSize})`);
         // return { articleList, total }
         let query = this.getRepository(Article).createQueryBuilder("article")
@@ -41,7 +41,10 @@ export class ArticleService extends BaseService implements ArticleInterface {
             ]);
         query = query.where('1=1');
         if (type) {
-            query = query.andWhere('type=:type', { type });
+            query = query.andWhere('article.type=:type', { type });
+        }
+        if(identity){
+            query = query.andWhere('users.identity=:identity', { identity });
         }
         let articleList: Array<Article> = await query.skip(currPage - 1).take(pageSize)./*printSql().*/getRawMany();
 
@@ -56,7 +59,7 @@ export class ArticleService extends BaseService implements ArticleInterface {
      * @memberof ArticleInterface
      */
     async getArticleInfoById(id: number): Promise<Article> {
-        let query = this.getRepository(Article).createQueryBuilder("article")
+        let article: Article = await  this.getRepository(Article).createQueryBuilder("article")
             .leftJoinAndSelect('article.users', 'users')
             .leftJoinAndSelect('article.articleType', 'articleType')
             .select([
@@ -74,10 +77,8 @@ export class ArticleService extends BaseService implements ArticleInterface {
                 'articleType.name articleTypeName',
                 'users.id usersId',
                 'users.nickName nickName'
-            ]);
-        query = query.where('article.id=:id', { id });
-        let article: Article = await query.getRawOne();
-
+            ]).where('article.id=:id', { id }).getRawOne();
+        this.getRepository(Article).updateById(id, { visitors: ++article.visitors });
         return article || {};
     }
 

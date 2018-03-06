@@ -20,7 +20,7 @@ export class ArticleTypeController {
      * @memberof ArticleTypeController
      */
     @Get('/findAllGroupType')
-    async findAllGroupType(req, res) {
-        res.sendSuccess(await articleTypeService.findAllGroupType());
+    async findAllGroupType({query:{identity}}, res) {
+        res.sendSuccess(await articleTypeService.findAllGroupType(identity));
     }
 }

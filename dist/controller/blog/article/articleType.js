@@ -60,16 +60,17 @@ var ArticleTypeController = /** @class */ (function () {
      * @param {any} res
      * @memberof ArticleTypeController
      */
-    ArticleTypeController.prototype.findAllGroupType = function (req, res) {
+    ArticleTypeController.prototype.findAllGroupType = function (_a, res) {
+        var identity = _a.query.identity;
         return __awaiter(this, void 0, void 0, function () {
-            var _a, _b;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
+            var _b, _c;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
                     case 0:
-                        _b = (_a = res).sendSuccess;
-                        return [4 /*yield*/, articleTypeService.findAllGroupType()];
+                        _c = (_b = res).sendSuccess;
+                        return [4 /*yield*/, articleTypeService.findAllGroupType(identity)];
                     case 1:
-                        _b.apply(_a, [_c.sent()]);
+                        _c.apply(_b, [_d.sent()]);
                         return [2 /*return*/];
                 }
             });
