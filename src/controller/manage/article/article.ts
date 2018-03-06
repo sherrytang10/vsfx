@@ -4,6 +4,7 @@ import { ArticleService } from '../../../service/article/article';
 import { Article } from '../../../entity/article';
 import { ArticleType } from '../../../entity/articleType';
 import { Users } from '../../../entity/users';
+import { Picture } from '../../../entity/picture';
 
 /**
  * 文章controller
@@ -110,6 +111,7 @@ export class ArticleController {
         if (!article.docreader || !article.docreader.replace(/\s/g, '')) {
             article.docreader = article.content.substr(0, 200);
         }
+        article.picture = body.picture;
         res.sendSuccess(await articleService.saveOrUpdateArticle(article));
     }
 

@@ -100,7 +100,7 @@ var ArticleService = /** @class */ (function (_super) {
                         if (identity) {
                             query = query.andWhere('users.identity=:identity', { identity: identity });
                         }
-                        return [4 /*yield*/, query.skip(currPage - 1).take(pageSize).getRawMany()];
+                        return [4 /*yield*/, query.orderBy('article.publishDate', 'desc').skip(currPage - 1).take(pageSize).getRawMany()];
                     case 1:
                         articleList = _j.sent();
                         return [4 /*yield*/, this.getRepository(article_1.Article).count()];

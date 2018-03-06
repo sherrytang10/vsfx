@@ -76,7 +76,7 @@ var PictureController = /** @class */ (function () {
         _common_1.Post('/upload')
     ], PictureController.prototype, "uploadPicture", null);
     PictureController = __decorate([
-        _common_1.Controller('/picture_library')
+        _common_1.Controller('/picture')
     ], PictureController);
     return PictureController;
 }());

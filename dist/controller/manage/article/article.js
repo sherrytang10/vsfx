@@ -177,6 +177,7 @@ var ArticleController = /** @class */ (function () {
                         if (!article.docreader || !article.docreader.replace(/\s/g, '')) {
                             article.docreader = article.content.substr(0, 200);
                         }
+                        article.picture = body.picture;
                         _c = (_b = res).sendSuccess;
                         return [4 /*yield*/, articleService.saveOrUpdateArticle(article)];
                     case 1:

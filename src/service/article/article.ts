@@ -46,7 +46,7 @@ export class ArticleService extends BaseService implements ArticleInterface {
         if(identity){
             query = query.andWhere('users.identity=:identity', { identity });
         }
-        let articleList: Array<Article> = await query.skip(currPage - 1).take(pageSize)./*printSql().*/getRawMany();
+        let articleList: Array<Article> = await query.orderBy('article.publishDate', 'desc').skip(currPage - 1).take(pageSize)./*printSql().*/getRawMany();
 
         let total = await this.getRepository(Article).count();
         return { articleList, total };

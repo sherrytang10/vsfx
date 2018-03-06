@@ -82,6 +82,7 @@ var UsersService = /** @class */ (function (_super) {
                             'users.email email',
                             'users.phone phone',
                             'users.motto metto',
+                            'users.headimg headimg',
                             'usersRole.id roleId',
                             'usersRole.name roleName'
                         ]).where('users.id=:id', { id: id });
@@ -117,6 +118,7 @@ var UsersService = /** @class */ (function (_super) {
                             'users.email email',
                             'users.phone phone',
                             'users.motto metto',
+                            'users.headimg headimg',
                             'usersRole.id roleId',
                             'usersRole.name roleName'
                         ]).where('1=1');
@@ -174,6 +176,7 @@ var UsersService = /** @class */ (function (_super) {
                             'users.email email',
                             'users.phone phone',
                             'users.motto metto',
+                            'users.headimg headimg',
                             'usersRole.id roleId',
                             'usersRole.name roleName'
                         ]).where('1=1');
@@ -193,7 +196,7 @@ var UsersService = /** @class */ (function (_super) {
             var usersList;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getRepository(users_1.Users).query("select count(u.id) count, u.identity, u.nickName, u.motto from users u, article at where u.disabled = 1 and u.id = `at`.usersId group by u.id")];
+                    case 0: return [4 /*yield*/, this.getRepository(users_1.Users).query("select count(u.id) count, u.identity, u.nickName, u.motto from users u, article at where u.disabled = 1 and `at`.disabled = 1 and u.id = `at`.usersId group by u.id")];
                     case 1:
                         usersList = _a.sent();
                         return [2 /*return*/, usersList];
@@ -216,6 +219,7 @@ var UsersService = /** @class */ (function (_super) {
                             'users.email email',
                             'users.phone phone',
                             'users.motto metto',
+                            'users.headimg headimg',
                             'usersRole.id roleId',
                             'usersRole.name roleName'
                         ]).where('users.identity=:identity', { identity: identity }).getRawOne()];

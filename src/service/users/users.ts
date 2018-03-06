@@ -27,6 +27,7 @@ export class UsersService extends BaseService implements UsersInterface {
                 'users.email email',
                 'users.phone phone',
                 'users.motto metto',
+                'users.headimg headimg',
                 'usersRole.id roleId',
                 'usersRole.name roleName'
             ]).where('users.id=:id', { id });
@@ -59,6 +60,7 @@ export class UsersService extends BaseService implements UsersInterface {
                 'users.email email',
                 'users.phone phone',
                 'users.motto metto',
+                'users.headimg headimg',
                 'usersRole.id roleId',
                 'usersRole.name roleName'
             ]).where('1=1');
@@ -97,6 +99,7 @@ export class UsersService extends BaseService implements UsersInterface {
                 'users.email email',
                 'users.phone phone',
                 'users.motto metto',
+                'users.headimg headimg',
                 'usersRole.id roleId',
                 'usersRole.name roleName'
             ]).where('1=1');
@@ -121,6 +124,7 @@ export class UsersService extends BaseService implements UsersInterface {
             'users.email email',
             'users.phone phone',
             'users.motto metto',
+            'users.headimg headimg',
             'usersRole.id roleId',
             'usersRole.name roleName'
         ]).where('users.identity=:identity', { identity }).getRawOne();
