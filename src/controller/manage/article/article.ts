@@ -109,7 +109,7 @@ export class ArticleController {
             article.createDate = nowTime;
         }
         if (!article.docreader || !article.docreader.replace(/\s/g, '')) {
-            article.docreader = article.content.substr(0, 200);
+            article.docreader = article.content.replace(/\<[^\>]+\>|\< ?\/[^\>]+\>/g, '').substr(0, 200);
         }
         article.picture = body.picture;
         res.sendSuccess(await articleService.saveOrUpdateArticle(article));
