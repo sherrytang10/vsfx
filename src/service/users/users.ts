@@ -55,7 +55,7 @@ export class UsersService extends BaseService implements UsersInterface {
             .select([
                 'users.id id',
                 'users.nickName nickName',
-                'users.userName userName',
+                // 'users.userName userName',
                 'users.password password',
                 'users.email email',
                 'users.phone phone',
@@ -95,7 +95,7 @@ export class UsersService extends BaseService implements UsersInterface {
             .select([
                 'users.id id',
                 'users.nickName nickName',
-                'users.userName userName',
+                // 'users.userName userName',
                 'users.email email',
                 'users.phone phone',
                 'users.motto metto',
@@ -119,7 +119,7 @@ export class UsersService extends BaseService implements UsersInterface {
         .select([
             'users.id id',
             'users.nickName nickName',
-            'users.userName userName',
+            // 'users.userName userName',
             'users.password password',
             'users.email email',
             'users.phone phone',
