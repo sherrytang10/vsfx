@@ -16,7 +16,8 @@ export class UsersService extends BaseService implements UsersInterface {
      * @memberof UsersService
      */
     async getUsersById(id: number): Promise<Users> {
-
+        let users = <Users>{};
+        if(!id || id == 0) return users;
         let query = this.getRepository(Users).createQueryBuilder("users")
             .leftJoinAndSelect('users.usersRole', 'usersRole')
             .select([
@@ -31,7 +32,7 @@ export class UsersService extends BaseService implements UsersInterface {
                 'usersRole.id roleId',
                 'usersRole.name roleName'
             ]).where('users.id=:id', { id });
-        let users = await query.printSql().getRawOne();
+        users = await query.printSql().getRawOne();
         return users || {};
         // let users: Users = await this.getRepository(Users).query('select id, usersRoleId,email, nickName, motto from users where id=' + id);
         // return users[0] || {};

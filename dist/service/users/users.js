@@ -68,10 +68,13 @@ var UsersService = /** @class */ (function (_super) {
      */
     UsersService.prototype.getUsersById = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var query, users;
+            var users, query;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        users = {};
+                        if (!id || id == 0)
+                            return [2 /*return*/, users];
                         query = this.getRepository(users_1.Users).createQueryBuilder("users")
                             .leftJoinAndSelect('users.usersRole', 'usersRole')
                             .select([
@@ -113,7 +116,7 @@ var UsersService = /** @class */ (function (_super) {
                             .select([
                             'users.id id',
                             'users.nickName nickName',
-                            'users.userName userName',
+                            // 'users.userName userName',
                             'users.password password',
                             'users.email email',
                             'users.phone phone',
@@ -172,7 +175,7 @@ var UsersService = /** @class */ (function (_super) {
                             .select([
                             'users.id id',
                             'users.nickName nickName',
-                            'users.userName userName',
+                            // 'users.userName userName',
                             'users.email email',
                             'users.phone phone',
                             'users.motto metto',
@@ -214,7 +217,7 @@ var UsersService = /** @class */ (function (_super) {
                             .select([
                             'users.id id',
                             'users.nickName nickName',
-                            'users.userName userName',
+                            // 'users.userName userName',
                             'users.password password',
                             'users.email email',
                             'users.phone phone',

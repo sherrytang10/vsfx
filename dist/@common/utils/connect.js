@@ -62,6 +62,15 @@ exports.DefineRoute = function (controllersPath) {
                         path = path.replace(/(\w+)\/$/, '');
                         if (method) {
                             router[method](path, function (req, res, next) {
+                                if (req.originalUrl.indexOf('/manage/') === 0) {
+                                    if (req.url.indexOf('/users/login') === -1 && (!req.session || !req.session.users || !req.session.users.id)) {
+                                        res.send({
+                                            status: 998,
+                                            errmsg: '登陆态超时'
+                                        });
+                                        res.end();
+                                    }
+                                }
                                 res.sendError = function (errmsg, status) {
                                     if (errmsg === void 0) { errmsg = '接口返回异常'; }
                                     if (status === void 0) { status = 0; }

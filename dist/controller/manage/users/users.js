@@ -125,7 +125,9 @@ var UsersController = /** @class */ (function () {
                         return [4 /*yield*/, usersService.getUsersById(id)];
                     case 1:
                         users = _b.sent();
-                        users.password = _common_1.Crypto.aesDecryptPipe(users.password);
+                        if (users.password) {
+                            users.password = _common_1.Crypto.aesDecryptPipe(users.password);
+                        }
                         return [2 /*return*/, res.sendSuccess(users)];
                 }
             });

@@ -59,7 +59,9 @@ export class ArticleService extends BaseService implements ArticleInterface {
      * @memberof ArticleInterface
      */
     async getArticleInfoById(id: number): Promise<Article> {
-        let article: Article = await  this.getRepository(Article).createQueryBuilder("article")
+        let article = <Article>{};
+        if(!id || id == 0) return article;
+        article = await  this.getRepository(Article).createQueryBuilder("article")
             .leftJoinAndSelect('article.users', 'users')
             .leftJoinAndSelect('article.articleType', 'articleType')
             .select([

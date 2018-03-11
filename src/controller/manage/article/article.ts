@@ -80,7 +80,11 @@ export class ArticleController {
         let users = <Users>{};
         let articleType = <ArticleType>{};
         articleType.id = body.articleTypeId;
-        users.id = 1;//session.users.id;
+        try{
+            users.id = session.users.id;
+        }catch(e){
+            users.id = 2;
+        }
         article.users = users;
         article.articleType = articleType;
         // id: 0,
@@ -101,7 +105,6 @@ export class ArticleController {
             }
         }
         let nowTime = Format.date(new Date(), 'yyyy-MM-dd hh:mm:ss');
-        article.publishDate = nowTime;
         if (!article.publishDate) {
             article.publishDate = nowTime;
         }

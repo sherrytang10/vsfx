@@ -148,7 +148,12 @@ var ArticleController = /** @class */ (function () {
                         users = {};
                         articleType = {};
                         articleType.id = body.articleTypeId;
-                        users.id = 1; //session.users.id;
+                        try {
+                            users.id = session.users.id;
+                        }
+                        catch (e) {
+                            users.id = 2;
+                        }
                         article.users = users;
                         article.articleType = articleType;
                         // id: 0,
@@ -167,7 +172,6 @@ var ArticleController = /** @class */ (function () {
                             }
                         }
                         nowTime = utils_1.Format.date(new Date(), 'yyyy-MM-dd hh:mm:ss');
-                        article.publishDate = nowTime;
                         if (!article.publishDate) {
                             article.publishDate = nowTime;
                         }
@@ -175,7 +179,7 @@ var ArticleController = /** @class */ (function () {
                             article.createDate = nowTime;
                         }
                         if (!article.docreader || !article.docreader.replace(/\s/g, '')) {
-                            article.docreader = article.content.substr(0, 200);
+                            article.docreader = article.content.replace(/\<[^\>]+\>|\< ?\/[^\>]+\>/g, '').substr(0, 200);
                         }
                         article.picture = body.picture;
                         _c = (_b = res).sendSuccess;
