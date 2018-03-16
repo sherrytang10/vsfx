@@ -5,12 +5,13 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 // const Middleware = require('../middleware');
 const argv = require('minimist')(process.argv.slice(2));
+const RedisStore = require('connect-redis')(session);
 
 import { DefineRoute } from '../@common';
 
 // 加载typeorm  依赖global.config
 import '../@common/db/orm';
-
+import redis from '../@common/db/redis';
 /**
  * 设置views路径
  */
@@ -20,9 +21,13 @@ import '../@common/db/orm';
 
 app.use(bodyParser.json());
 app.use(session({
+    store: new RedisStore({
+        client: redis,
+        prefix: 'hgk'
+    }),
     secret: 'pazq-node-website',
     // name: 'testapp', //这里的name值得是cookie的name，默认cookie的name是：connect.sid
-    cookie: { maxAge: 80000 }, //设置maxAge是80000ms，即80s后session和相应的cookie失效过期
+    cookie: { maxAge: 1000 * 60 * 30 }, 
     resave: false,
     saveUninitialized: true,
 }));

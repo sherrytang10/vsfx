@@ -128,25 +128,29 @@ var ArticleService = /** @class */ (function (_super) {
             var article;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getRepository(article_1.Article).createQueryBuilder("article")
-                            .leftJoinAndSelect('article.users', 'users')
-                            .leftJoinAndSelect('article.articleType', 'articleType')
-                            .select([
-                            'article.id id',
-                            'article.title title',
-                            'article.type type',
-                            'article.docreader docreader',
-                            'article.picture picture',
-                            'article.visitors visitors',
-                            'article.praise praise',
-                            'cast(article.content as char) content',
-                            'date_format(article.publishDate, "%Y-%m-%d %H:%I:%S") publishDate',
-                            'article.disabled disabled',
-                            'articleType.id articleTypeId',
-                            'articleType.name articleTypeName',
-                            'users.id usersId',
-                            'users.nickName nickName'
-                        ]).where('article.id=:id', { id: id }).getRawOne()];
+                    case 0:
+                        article = {};
+                        if (!id || id == 0)
+                            return [2 /*return*/, article];
+                        return [4 /*yield*/, this.getRepository(article_1.Article).createQueryBuilder("article")
+                                .leftJoinAndSelect('article.users', 'users')
+                                .leftJoinAndSelect('article.articleType', 'articleType')
+                                .select([
+                                'article.id id',
+                                'article.title title',
+                                'article.type type',
+                                'article.docreader docreader',
+                                'article.picture picture',
+                                'article.visitors visitors',
+                                'article.praise praise',
+                                'cast(article.content as char) content',
+                                'date_format(article.publishDate, "%Y-%m-%d %H:%I:%S") publishDate',
+                                'article.disabled disabled',
+                                'articleType.id articleTypeId',
+                                'articleType.name articleTypeName',
+                                'users.id usersId',
+                                'users.nickName nickName'
+                            ]).where('article.id=:id', { id: id }).getRawOne()];
                     case 1:
                         article = _a.sent();
                         this.getRepository(article_1.Article).updateById(id, { visitors: ++article.visitors });

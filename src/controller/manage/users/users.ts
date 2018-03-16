@@ -57,7 +57,9 @@ export class UsersController {
             return res.sendError('入参格式不正确');
         }
         let users: Users = await usersService.getUsersById(id);
-        users.password = Crypto.aesDecryptPipe(users.password);
+        if(users.password){
+            users.password = Crypto.aesDecryptPipe(users.password);
+        }
         return res.sendSuccess(users);
     }
     /**
