@@ -123,7 +123,7 @@ var ArticleController = /** @class */ (function () {
     ArticleController.prototype.saveArticleInfo = function (_a, res) {
         var body = _a.body, session = _a.session;
         return __awaiter(this, void 0, void 0, function () {
-            var article, users, articleType, nowTime, _b, _c;
+            var article, users, articleType, nowTime, docreader, _b, _c;
             return __generator(this, function (_d) {
                 switch (_d.label) {
                     case 0:
@@ -175,7 +175,11 @@ var ArticleController = /** @class */ (function () {
                             article.createDate = nowTime;
                         }
                         if (!article.docreader || !article.docreader.replace(/\s/g, '')) {
-                            article.docreader = article.content.substr(0, 200);
+                            docreader = article.content;
+                            docreader = docreader.replace(/(\&|\&)gt;/g, ">")
+                                .replace(/(\&|\&)lt;/g, "<")
+                                .replace(/(\&|\&)quot;/g, "\"");
+                            article.docreader = docreader.replace(/\<[^\>]+\>|\< ?\/[^\>]+\>/g, '').substr(0, 200);
                         }
                         article.picture = body.picture;
                         _c = (_b = res).sendSuccess;

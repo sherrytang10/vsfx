@@ -68,7 +68,7 @@ var ArticleService = /** @class */ (function (_super) {
     ArticleService.prototype.findAllArticle = function (_a) {
         var _b = _a.articleTypeId, articleTypeId = _b === void 0 ? 0 : _b, _c = _a.type, type = _c === void 0 ? 0 : _c, _d = _a.identity, identity = _d === void 0 ? '' : _d, _e = _a.nickName, nickName = _e === void 0 ? '' : _e, _f = _a.desabled, desabled = _f === void 0 ? null : _f, _g = _a.pageSize, pageSize = _g === void 0 ? 20 : _g, _h = _a.currPage, currPage = _h === void 0 ? 1 : _h;
         return __awaiter(this, void 0, void 0, function () {
-            var query, articleList, total;
+            var query, params, articleList, total;
             return __generator(this, function (_j) {
                 switch (_j.label) {
                     case 0:
@@ -92,18 +92,24 @@ var ArticleService = /** @class */ (function (_super) {
                             'article.type type',
                             'users.id usersId',
                             'users.nickName nickName'
-                        ]);
+                        ]), params = {};
                         query = query.where('1=1');
                         if (type) {
                             query = query.andWhere('article.type=:type', { type: type });
+                            params.type = type;
+                        }
+                        if (articleTypeId) {
+                            query = query.andWhere('article.articleTypeId=:articleTypeId', { articleTypeId: articleTypeId });
+                            params.articleTypeId = articleTypeId;
                         }
                         if (identity) {
                             query = query.andWhere('users.identity=:identity', { identity: identity });
+                            params.identity = identity;
                         }
-                        return [4 /*yield*/, query.orderBy('article.publishDate', 'desc').skip(currPage - 1).take(pageSize).getRawMany()];
+                        return [4 /*yield*/, query.orderBy('article.publishDate', 'desc').offset((currPage - 1) * pageSize).limit(pageSize).getRawMany()];
                     case 1:
                         articleList = _j.sent();
-                        return [4 /*yield*/, this.getRepository(article_1.Article).count()];
+                        return [4 /*yield*/, this.getRepository(article_1.Article).count(params)];
                     case 2:
                         total = _j.sent();
                         return [2 /*return*/, { articleList: articleList, total: total }];

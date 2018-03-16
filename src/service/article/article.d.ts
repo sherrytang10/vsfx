@@ -3,7 +3,7 @@ import { Article } from '../../entity/article';
 export interface findAllArticleD {
     articleTypeId?: number;
     type?: number;
-    identity?:string;
+    identity?: string;
     nickName?: string;
     desabled?: null;
     pageSize?: number;

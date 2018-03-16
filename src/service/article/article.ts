@@ -15,7 +15,7 @@ export class ArticleService extends BaseService implements ArticleInterface {
      * @param {Article} article 
      * @memberof ArticleInterface
      */
-    async findAllArticle({ articleTypeId = 0, type = 0,identity='', nickName = '', desabled = null, pageSize = 20, currPage = 1 }: findAllArticleD) {
+    async findAllArticle({ articleTypeId = 0, type = 0, identity = '', nickName = '', desabled = null, pageSize = 20, currPage = 1 }: findAllArticleD) {
         // let [articleList, [{ total }]] = await this.execute(`call getArticleList(${articleTypeId}, ${type}, ${desabled},${nickName || null},${currPage}, ${pageSize})`);
         // return { articleList, total }
         let query = this.getRepository(Article).createQueryBuilder("article")
@@ -38,17 +38,25 @@ export class ArticleService extends BaseService implements ArticleInterface {
                 'article.type type',
                 'users.id usersId',
                 'users.nickName nickName'
-            ]);
+            ]),
+            params = <findAllArticleD>{};
         query = query.where('1=1');
         if (type) {
             query = query.andWhere('article.type=:type', { type });
+            params.type = type;
         }
-        if(identity){
+        if (articleTypeId) {
+            query = query.andWhere('article.articleTypeId=:articleTypeId', { articleTypeId });
+            params.articleTypeId = articleTypeId;
+        }
+        if (identity) {
             query = query.andWhere('users.identity=:identity', { identity });
+            params.identity = identity;
         }
-        let articleList: Array<Article> = await query.orderBy('article.publishDate', 'desc').skip(currPage - 1).take(pageSize)./*printSql().*/getRawMany();
+        // .skip(currPage - 1).take(pageSize).
+        let articleList: Array<Article> = await query.orderBy('article.publishDate', 'desc').offset((currPage - 1) * pageSize).limit(pageSize)./*printSql().*/getRawMany();
 
-        let total = await this.getRepository(Article).count();
+        let total = await this.getRepository(Article).count(params);
         return { articleList, total };
     }
 
@@ -59,7 +67,7 @@ export class ArticleService extends BaseService implements ArticleInterface {
      * @memberof ArticleInterface
      */
     async getArticleInfoById(id: number): Promise<Article> {
-        let article: Article = await  this.getRepository(Article).createQueryBuilder("article")
+        let article: Article = await this.getRepository(Article).createQueryBuilder("article")
             .leftJoinAndSelect('article.users', 'users')
             .leftJoinAndSelect('article.articleType', 'articleType')
             .select([

@@ -22,14 +22,17 @@ export class ArticleController {
      * @memberof ArticleController
      */
     @Get('/findAll')
-    async findAllArticle({ query: { articleTypeId, type, identity } }, res) {
+    async findAllArticle({ query: { articleTypeId, type, identity, currPage = 1, pageSize = 15 } }, res) {
         if (articleTypeId && isNotInteger(articleTypeId)) {
             return res.sendError('分类id类型错误');
         }
-        if (type && isNotInteger(type)) {
-            return res.sendError('type类型错误');
+        if (currPage && isNotInteger(currPage)) {
+            return res.sendError('入参异常类型错误');
         }
-        res.sendSuccess(await articleService.findAllArticle({ articleTypeId, type,identity }));
+        if (pageSize && isNotInteger(pageSize)) {
+            return res.sendError('入参异常类型错误');
+        }
+        res.sendSuccess(await articleService.findAllArticle({ articleTypeId, type, identity, currPage, pageSize }));
     }
 
 

@@ -62,22 +62,25 @@ var ArticleController = /** @class */ (function () {
      * @memberof ArticleController
      */
     ArticleController.prototype.findAllArticle = function (_a, res) {
-        var _b = _a.query, articleTypeId = _b.articleTypeId, type = _b.type, identity = _b.identity;
+        var _b = _a.query, articleTypeId = _b.articleTypeId, type = _b.type, identity = _b.identity, _c = _b.currPage, currPage = _c === void 0 ? 1 : _c, _d = _b.pageSize, pageSize = _d === void 0 ? 15 : _d;
         return __awaiter(this, void 0, void 0, function () {
-            var _c, _d;
-            return __generator(this, function (_e) {
-                switch (_e.label) {
+            var _e, _f;
+            return __generator(this, function (_g) {
+                switch (_g.label) {
                     case 0:
                         if (articleTypeId && utils_1.isNotInteger(articleTypeId)) {
                             return [2 /*return*/, res.sendError('分类id类型错误')];
                         }
-                        if (type && utils_1.isNotInteger(type)) {
-                            return [2 /*return*/, res.sendError('type类型错误')];
+                        if (currPage && utils_1.isNotInteger(currPage)) {
+                            return [2 /*return*/, res.sendError('入参异常类型错误')];
                         }
-                        _d = (_c = res).sendSuccess;
-                        return [4 /*yield*/, articleService.findAllArticle({ articleTypeId: articleTypeId, type: type, identity: identity })];
+                        if (pageSize && utils_1.isNotInteger(pageSize)) {
+                            return [2 /*return*/, res.sendError('入参异常类型错误')];
+                        }
+                        _f = (_e = res).sendSuccess;
+                        return [4 /*yield*/, articleService.findAllArticle({ articleTypeId: articleTypeId, type: type, identity: identity, currPage: currPage, pageSize: pageSize })];
                     case 1:
-                        _d.apply(_c, [_e.sent()]);
+                        _f.apply(_e, [_g.sent()]);
                         return [2 /*return*/];
                 }
             });
